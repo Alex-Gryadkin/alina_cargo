@@ -1,0 +1,20 @@
+{% extends 'index.html' %}
+
+
+{% block content %}
+    <div class="packages">
+        {% for package in packages %}
+        <div class="package" id="track_{{ package.package_id }}">
+            <div class="package-id">{{ package.package_id }}</div>
+            <div class="package-desc">{{ package.desc }}</div>
+            <div class="package-status">{{ package.package_id.get_status_display }}</div>
+            <button class="btn-del">Удалить</button>
+        </div>
+        {% endfor %}
+        <form class="addpackage" action="{% url 'packages:list' %}" method="post">
+            {% csrf_token %}
+            {{ form }}
+            <input type="submit" value="Add">
+        </form>
+    </div>
+{% endblock %}

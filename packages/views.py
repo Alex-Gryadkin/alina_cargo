@@ -1,3 +1,30 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from .models import Packages, UserPackages
+from . import forms
+from django.views.generic import View
+from django.http import JsonResponse
 
-# Create your views here.
+def packages_list(request):
+    if request.method == 'POST':
+        form = forms.AddPackage(request.POST)
+        if form.is_valid():
+            trackid = form.cleaned_data.get('trackid')
+            desc = form.cleaned_data.get('desc')
+            if Packages.objects.filter(id=trackid).count()==0:
+                NewPackage=Packages(id=trackid,status='new')
+                NewPackage.save()
+            thispack = Packages.objects.get(id=trackid)
+            UP = UserPackages(user_id=request.user,package_id=thispack,desc=desc)
+            UP.save()
+    else:
+        form = forms.AddPackage()
+    packages = UserPackages.objects.select_related('package_id').filter(user_id=request.user)
+    return render(request, 'packages.html', {'packages': packages, 'form':form})
+
+class AjaxHandlerView(View):
+    def get(self, request):
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            package_id = request.GET.get('package_id')
+            UserPackages.objects.filter(package_id=package_id).delete()
+            return JsonResponse({'id':package_id}, status=200)
+        return redirect('packages:list')

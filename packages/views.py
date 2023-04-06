@@ -5,7 +5,20 @@ from django.views.generic import View
 from django.http import JsonResponse
 
 def packages_list(request):
-    if request.method == 'POST':
+    form = forms.AddPackage()
+    packages = UserPackages.objects.select_related('package_id').filter(user_id=request.user)
+    return render(request, 'packages.html', {'packages': packages, 'form':form})
+
+class PackagesDelete(View):
+    def get(self, request):
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            package_id = request.GET.get('package_id')
+            UserPackages.objects.filter(user_id=request.user).filter(package_id=package_id).delete()
+            return JsonResponse({'id': package_id}, status=200)
+        return redirect('packages:list')
+
+class PackagesAdd(View):
+    def post(self, request):
         form = forms.AddPackage(request.POST)
         if form.is_valid():
             trackid = form.cleaned_data.get('trackid')
@@ -14,17 +27,13 @@ def packages_list(request):
                 NewPackage=Packages(id=trackid,status='new')
                 NewPackage.save()
             thispack = Packages.objects.get(id=trackid)
-            UP = UserPackages(user_id=request.user,package_id=thispack,desc=desc)
-            UP.save()
-    else:
-        form = forms.AddPackage()
-    packages = UserPackages.objects.select_related('package_id').filter(user_id=request.user)
-    return render(request, 'packages.html', {'packages': packages, 'form':form})
-
-class AjaxHandlerView(View):
-    def get(self, request):
-        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-            package_id = request.GET.get('package_id')
-            UserPackages.objects.filter(package_id=package_id).delete()
-            return JsonResponse({'id':package_id}, status=200)
-        return redirect('packages:list')
+            if UserPackages.objects.filter(user_id=request.user).filter(package_id=thispack).count()==0:
+                UserPackageSave = UserPackages(user_id=request.user,package_id=thispack,desc=desc)
+                UserPackageSave.save()
+                package = UserPackages.objects.select_related('package_id').get(id=UserPackageSave.id)
+                print(package)
+                return JsonResponse({'packageid': packages.package_id, 'desc': packages.desc, 'status': packages._get_status_display()},
+                                    status=200)
+            else:
+                return JsonResponse({'errorMessage':'Трек-номер уже добавлен ранее'})
+        return JsonResponse({'errorMessage':'Трек-номер уже добавлен ранее'})

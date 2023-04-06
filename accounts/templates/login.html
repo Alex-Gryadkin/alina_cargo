@@ -1,15 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>This is login page</title>
-</head>
-<body>
+{% extends 'index.html' %}
+
+{% block content %}
     <form>
         <h1>Login</h1>
             <h3>Телефон</h3><p>{{ form.username }}</p>
             <h3>Пароль</h3><p>{{ form.password }}</p>
             <input type="submit" value="Войти">
     </form>
-</body>
-</html>
+
+{% endblock %}

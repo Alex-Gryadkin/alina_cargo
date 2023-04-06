@@ -1,5 +1,20 @@
-
 $(document).ready(function(){
+
+    $('.btn-del').click(function(){
+        $.ajax({
+            url:'del',
+            type: 'get',
+            data: {
+                package_id: $(this).parent().parent().attr('id').slice(6) // отправляем ID на удаление
+            },
+            success: function(response){
+                $('#track_'+response.id).fadeOut('fast');
+                //$('#track_'+response.id).remove();
+                // если ответ пришел, удаляем блок с кодом
+            }
+
+        })
+    })
 
     $('.btn-del').click(function(){
         $.ajax({
@@ -25,9 +40,8 @@ $(document).ready(function(){
             type: 'post',
             data: packageData,
             success: function(response){
-                alert(response.errorMessage)
-                if (response.errorMessage!='') {
-                    $('#packageslist').append('<div class="alert alert-danger" role="alert">A simple danger alert—check it out!</div>')
+                if (response.errorMessage==1){
+                    $('#errorallert').fadeIn('slow')
                 }
                 else {
                     newTrackDiv = '<div class="card mt-1" id="track_' + response.package_id + '" style="display:none">'

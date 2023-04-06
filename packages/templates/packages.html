@@ -2,6 +2,33 @@
 
 
 {% block content %}
+
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#trackidDelModal">
+  Launch demo modal
+</button>
+
+    <!-- Modal Package delete -->
+    <div class="modal fade" id="trackidDeleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog  modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Удалить трек-номер <strong><span id="deltrackid">22332323</span></strong></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            Вы можете в любой момент добавить трек-номер снова
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+            <button type="button" class="btn btn-danger" id="trackIdDelConfirmBtn">Удалить</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Packages list -->
     <div class="col-8 mt-5" if="packageslist">
         <h2 class="text-center mb-2">Мои трек-номера</h2>
         {% for package in packages %}
@@ -17,6 +44,9 @@
         {% endfor %}
         <hr style="mt-5"/>
     </div>
+    <div id="errorallert" class="alert alert-danger" role="alert" style="display:none">Трек-номер уже добавлен ранее</div>
+
+
 
     <div class="col-8 mt-5">
         <form method="post" class="form-inline justify-content-center mx-3" id="addpackageform"  data-url="{% url 'packages:add' %}">

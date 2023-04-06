@@ -30,4 +30,3 @@ class UserPackages(models.Model):
     desc = models.TextField(max_length=256)
     def __str__(self):
         return str(self.user_id)+' : '+str(self.package_id)
-    # статус "Добавлено" - по умолчанию

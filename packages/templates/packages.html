@@ -1,0 +1,32 @@
+{% extends 'index.html' %}
+
+
+{% block content %}
+    <div class="col-8 mt-5" if="packageslist">
+        <h2 class="text-center mb-2">Мои трек-номера</h2>
+        {% for package in packages %}
+        <div class="card mt-1" id="track_{{ package.package_id }}">
+            <div class="card-body">
+                <button type="button" class="btn-close float-end  btn-del" aria-label="Удалить"></button>
+                <h3 class="card-title text-uppercase"> {{ package.package_id }}</h3>
+                <h6 class="card-subtitle mb-2 text-body-secondary">{{ package.package_id.get_status_display }}</h6>
+                <p class="card-text">{{ package.desc }}</p>
+            </div>
+        </div>
+
+        {% endfor %}
+        <hr style="mt-5"/>
+    </div>
+
+    <div class="col-8 mt-5">
+        <form method="post" class="form-inline justify-content-center mx-3" id="addpackageform"  data-url="{% url 'packages:add' %}">
+            {% csrf_token %}
+
+            {% for field in form %}
+                {{field}}
+            {% endfor %}
+            <button class="btn btn-success" type="submit" id="addpackage">Добавить</button>
+        </form>
+    <div class="col-5">
+
+{% endblock %}

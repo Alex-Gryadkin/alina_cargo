@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 """alina_cargo URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -19,3 +20,18 @@ from django.urls import path
 urlpatterns = [
     path('admin/', admin.site.urls),
 ]
+=======
+from django.contrib import admin
+from django.urls import path
+from django.contrib import admin
+from django.urls import path, include
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from . import views
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', views.homepage, name='home'),
+    path('packages/', include('packages.urls'))
+]
+urlpatterns+=staticfiles_urlpatterns()
+>>>>>>> 07933648404e3bec2ffbce0cf7681848981f0472

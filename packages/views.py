@@ -31,8 +31,7 @@ class PackagesAdd(View):
                 UserPackageSave = UserPackages(user_id=request.user,package_id=thispack,desc=desc)
                 UserPackageSave.save()
                 package = UserPackages.objects.select_related('package_id').get(id=UserPackageSave.id)
-                print(package)
-                return JsonResponse({'errorMessage': 0, 'packageid': packages.package_id, 'desc': packages.desc, 'status': packages._get_status_display()}, status=200)
+                return JsonResponse({'errorMessage': 0, 'packageid': package.package_id.id, 'desc': package.desc, 'status': package.package_id.get_status_display()}, status=200)
             else:
                 return JsonResponse({'errorMessage':1})
         return JsonResponse({'errorMessage':2})

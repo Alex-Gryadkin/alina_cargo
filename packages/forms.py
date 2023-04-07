@@ -1,11 +1,8 @@
 from django import forms
 from . import models
-class AddPackage(forms.ModelForm):
+class AddPackage(forms.Form):
     trackid = forms.CharField(max_length=50, label='Номер трека')
-    class Meta:
-        model = models.UserPackages
-        fields = ['desc']
+    #trackid = forms.RegexField("/^[A-Za-z0-9]+$/",max_length=50,label='Трек-номер')
+    desc = forms.CharField(help_text="Можно добавить описание", widget=forms.Textarea, required=False)
 
-        widgets = {
-            'desc': forms.TextInput(attrs={'class': 'form-control'})
-        }
+

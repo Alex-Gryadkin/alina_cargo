@@ -3,18 +3,12 @@
 
 {% block content %}
 
-
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#trackidDelModal">
-  Launch demo modal
-</button>
-
     <!-- Modal Package delete -->
-    <div class="modal fade" id="trackidDeleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="trackidDelModal" tabindex="-1" aria-labelledby="trackidDelModalLabel" aria-hidden="true">
       <div class="modal-dialog  modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Удалить трек-номер <strong><span id="deltrackid">22332323</span></strong></h5>
+            <h5 class="modal-title" id="trackidDelModalLabel">Удалить трек-номер <strong><span id="deltrackid"></span></strong></h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
@@ -29,34 +23,52 @@
     </div>
 
     <!-- Packages list -->
-    <div class="col-8 mt-5" if="packageslist">
+    <div class="col-8 mt-5" id="packageslist">
         <h2 class="text-center mb-2">Мои трек-номера</h2>
         {% for package in packages %}
         <div class="card mt-1" id="track_{{ package.package_id }}">
             <div class="card-body">
-                <button type="button" class="btn-close float-end  btn-del" aria-label="Удалить"></button>
-                <h3 class="card-title text-uppercase"> {{ package.package_id }}</h3>
+                <button type="button" class="btn-close float-end  btn-del" onclick="DeleteTrackId('{{ package.package_id }}')" aria-label="Удалить"></button>
+                <h3 class="card-title"> {{ package.package_id }}</h3>
                 <h6 class="card-subtitle mb-2 text-body-secondary">{{ package.package_id.get_status_display }}</h6>
                 <p class="card-text">{{ package.desc }}</p>
             </div>
         </div>
 
         {% endfor %}
-        <hr style="mt-5"/>
+
     </div>
-    <div id="errorallert" class="alert alert-danger" role="alert" style="display:none">Трек-номер уже добавлен ранее</div>
 
 
 
-    <div class="col-8 mt-5">
-        <form method="post" class="form-inline justify-content-center mx-3" id="addpackageform"  data-url="{% url 'packages:add' %}">
-            {% csrf_token %}
+<!-- Button Package Add -->
+    <div  class="col-8 mt-5 text-center">
+        <button type="button" class="btn btn-primary btn-lg" id="trackidAddOpenModalBtn">
+          Добавить трек-номер
+        </button>
+    </div>
 
-            {% for field in form %}
-                {{field}}
-            {% endfor %}
+<!-- Modal Package Add -->
+    <div class="modal fade" id="trackidAddModal" tabindex="-1" aria-labelledby="trackidAddModalLabel" aria-hidden="true">
+      <div class="modal-dialog  modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="trackidAddModalLabel">Добавление трек-номера</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form method="post" class="form-inline justify-content-center mx-3" id="addpackageform"  data-url="{% url 'packages:add' %}">
+                {% csrf_token %}
+                {{form}}
+                <div id="errorallert" class="alert alert-danger" role="alert" style="display:none">Трек-номер уже был добавлен ранее</div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
             <button class="btn btn-success" type="submit" id="addpackage">Добавить</button>
-        </form>
-    <div class="col-5">
+          </div>
+        </div>
+      </div>
+    </div>
 
 {% endblock %}

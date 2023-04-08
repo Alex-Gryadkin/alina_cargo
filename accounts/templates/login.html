@@ -1,11 +1,21 @@
 {% extends 'index.html' %}
 
 {% block content %}
-    <form>
-        <h1>Login</h1>
-            <h3>Телефон</h3><p>{{ form.username }}</p>
-            <h3>Пароль</h3><p>{{ form.password }}</p>
-            <input type="submit" value="Войти">
+    <div class="col-5">
+    <h1>Login</h1>
+    <form action="{% url 'accounts:login' %}" method="post">
+        {% csrf_token %}
+        <div class="input-group">
+            <span class="input-group-text">+7</span>
+            {{ form.username }}
+        </div>
+        {{ form.password }}
+        {% if form.errors %}
+            {{ form.error_messages.invalid_login}} <!-- display the form errors if they exist -->
+        {% endif %}
+        <input type="submit" class="btn btn-primary" value="Войти">
+
     </form>
+    </div>
 
 {% endblock %}

@@ -3,7 +3,10 @@ from .models import Packages, UserPackages
 from . import forms
 from django.views.generic import View
 from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
+from django.utils.html import escape
 
+@login_required(login_url='accounts:login')
 def packages_list(request):
     form = forms.AddPackage()
     packages = UserPackages.objects.select_related('package_id').filter(user_id=request.user)
@@ -21,8 +24,8 @@ class PackagesAdd(View):
     def post(self, request):
         form = forms.AddPackage(request.POST)
         if form.is_valid():
-            trackid = form.cleaned_data.get('trackid')
-            desc = form.cleaned_data.get('desc')
+            trackid = escape(form.cleaned_data.get('trackid'))
+            desc = escape(form.cleaned_data.get('desc'))
             if Packages.objects.filter(id=trackid).count()==0:
                 NewPackage=Packages(id=trackid,status='new')
                 NewPackage.save()

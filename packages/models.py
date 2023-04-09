@@ -20,13 +20,13 @@ class Packages(models.Model):
         default = 'new',
         verbose_name = 'Статус'
     )
+    status_change_date = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return self.id
-    status_change_date = models.DateTimeField(auto_now_add=True)
 
 class UserPackages(models.Model):
     user_id = models.ForeignKey(User, default=None, on_delete=models.CASCADE)
     package_id = models.ForeignKey(Packages, default=None, on_delete=models.CASCADE)
-    desc = models.TextField(max_length=256)
+    desc = models.CharField(max_length=50)
     def __str__(self):
         return str(self.user_id)+' : '+str(self.package_id)

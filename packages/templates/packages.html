@@ -28,12 +28,19 @@
     <div class="col-8 mt-5" id="packageslist">
         <h2 class="text-center mb-2">Мои трек-номера</h2>
         {% for package in packages %}
+
         <div class="card mt-1" id="track_{{ package.package_id }}">
             <div class="card-body">
                 <button type="button" class="btn-close float-end  btn-del" onclick="DeleteTrackId('{{ package.package_id }}')" aria-label="Удалить"></button>
-                <h3 class="card-title"> {{ package.package_id }}</h3>
+            {% if package.desc %}
+                <h3 class="card-title">{{ package.desc }}</h3>
                 <h6 class="card-subtitle mb-2 text-body-secondary">{{ package.package_id.get_status_display }}</h6>
-                <p class="card-text">{{ package.desc }}</p>
+                <p class="card-text">{{ package.package_id }}</p>
+            {% else %}
+                <h3 class="card-title">{{ package.package_id }}</h3>
+                <h6 class="card-subtitle mb-2 text-body-secondary">{{ package.package_id.get_status_display }}</h6>
+            {% endif %}
+
             </div>
         </div>
 
@@ -63,7 +70,7 @@
                 {% csrf_token %}
                 <input class="form-control mt-2" type="text" placeholder="Введите трек-номер" aria-label="Введите трек-номер" id="id_trackid" name="trackid">
                 <div class="invalid-feedback" id="errorallert">Трек-номер уже был добавлен ранее</div>
-                <textarea class="form-control mt-2" id="id_desc" name="desc" rows="3" placeholder="Описание (необязательно)"></textarea>
+                <input class="form-control mt-2" id="id_desc" name="desc" rows="3" placeholder="Описание (необязательно)"/>
 
             </form>
           </div>

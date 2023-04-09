@@ -43,9 +43,17 @@ $(document).ready(function(){
                     trackidAddModalEl.hide()
                     newTrackDiv = '<div class="card mt-1" id="track_' + response.packageid + '" style="display:none">'
                     newTrackDiv += '<div class="card-body"><button type="button" class="btn-close float-end  btn-del" onclick="DeleteTrackId(\'' + response.packageid + '\')" aria-label="Удалить"></button>'
-                    newTrackDiv += '<h3 class="card-title">' + response.packageid + '</h3>'
-                    newTrackDiv += '<h6 class="card-subtitle mb-2 text-body-secondary">' + response.status + '</h6>'
-                    newTrackDiv += '<p class="card-text">' + response.desc + '</p></div></div>'
+                    if (response.desc==''){
+                        newTrackDiv += '<h3 class="card-title">' + response.packageid + '</h3>'
+                        newTrackDiv += '<h6 class="card-subtitle mb-2 text-body-secondary">' + response.status + '</h6>'
+                    }
+                    else {
+                        newTrackDiv += '<h3 class="card-title">' + response.desc + '</h3>'
+                        newTrackDiv += '<h6 class="card-subtitle mb-2 text-body-secondary">' + response.status + '</h6>'
+                        newTrackDiv += '<p class="card-text">' + response.packageid + '</p></div></div>'
+                    }
+
+
                     $('#packageslist').append(newTrackDiv)
                     $('#track_' + response.packageid).fadeIn('slow')
                 }

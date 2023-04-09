@@ -19,12 +19,24 @@ function DeleteTrackId(trackid) {
     trackidDelModalEl.show()
 }
 
+function errorAlert(errorMessage){
+    $('#errorallert').html(errorMessage)
+    $('#errorallert').fadeIn('slow')
+
+}
+
 $(document).ready(function(){
 
     $('#trackidAddOpenModalBtn').click(function(){
         trackidAddModalEl.show()
     })
 
+    $('#id_trackid').bind("change keyup input click", function() {
+            if (this.value.match(/[^0-9a-zA-Z\s]/g)) {
+                errorAlert('Только латинские буквы и цифры')
+                this.value = this.value.replace(/[^0-9a-zA-Z\s]/g, '')
+                }
+        })
     $('#addpackage').click(function(){
         packageData = $('#addpackageform').serialize();
 
@@ -33,8 +45,9 @@ $(document).ready(function(){
             type: 'post',
             data: packageData,
             success: function(response){
+                $('#notracks').remove()
                 if (response.errorMessage==1){
-                    $('#errorallert').fadeIn('slow')
+                    errorAlert('Трек-номер уже был добавлен ранее')
                 }
                 else if (response.errorMessage==2){
                     alert('херня, а не код, давай по-новой')
@@ -49,7 +62,7 @@ $(document).ready(function(){
                     }
                     else {
                         newTrackDiv += '<h3 class="card-title">' + response.desc + '</h3>'
-                        newTrackDiv += '<h6 class="card-subtitle mb-2 text-body-secondary">' + response.status + '</h6>'
+                        newTrackDiv += '<h6 class="card-subtitle mb-2 text-body-secondary">' + response.status +' '+ response.changedate +'</h6>'
                         newTrackDiv += '<p class="card-text">' + response.packageid + '</p></div></div>'
                     }
 

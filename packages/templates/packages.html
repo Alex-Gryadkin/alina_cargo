@@ -26,7 +26,7 @@
 
     <!-- Packages list -->
     <div class="col-8 mt-5" id="packageslist">
-        <h2 class="text-center mb-4">Мои трек-номера</h2>
+        <h2 class="text-center mb-4 pagetitle">Отправления {{user.username}}</h2>
         {% if not packages %}
         <div class="text-center mt-1" id="notracks">
             Добавьте трек-номер, чтобы узнать статус отправления
@@ -40,7 +40,7 @@
             {% if package.desc %}
                 <h3 class="card-title">{{ package.desc }}</h3>
                 <h6 class="card-subtitle mb-2 text-body-secondary">{{ package.package_id.get_status_display }} {{ package.package_id.status_change_date|date:"d.m.Y H:i" }}</h6>
-                <p class="card-text">{{ package.package_id }}</p>
+                <p class="card-text">Трек-номер: {{ package.package_id }}</p>
             {% else %}
                 <h3 class="card-title">{{ package.package_id }}</h3>
                 <h6 class="card-subtitle mb-2 text-body-secondary">{{ package.package_id.get_status_display }} {{ package.package_id.status_change_date|date:"d.m.Y H:i" }}</h6>
@@ -73,10 +73,14 @@
           <div class="modal-body">
             <form method="post" class="" id="addpackageform"  data-url="{% url 'packages:add' %}">
                 {% csrf_token %}
-                <input class="form-control mt-2" type="text" placeholder="Введите трек-номер" aria-label="Введите трек-номер" id="id_trackid" name="trackid">
-                <div class="invalid-feedback" id="errorallert"></div>
-                <input class="form-control mt-2" id="id_desc" name="desc" rows="3" placeholder="Описание (необязательно)"/>
-
+                <div class="form-floating">
+                    <input class="form-control mt-2" type="text" placeholder="Введите трек-номер" aria-label="Введите трек-номер" id="id_trackid" name="trackid">
+                    <label for="id_trackid">Трек-номер</label>
+                </div>
+                <div class="form-floating">
+                    <input class="form-control mt-2" id="id_desc" name="desc" rows="3" placeholder="Описание (необязательно)"/>
+                    <label for="id_desc">Описание (необязательно)</label>
+                </div>
             </form>
           </div>
           <div class="modal-footer">

@@ -1,4 +1,5 @@
 {% extends 'index.html' %}
+{% load static %}
 
 {% block content %}
     <div class="col-5">
@@ -14,8 +15,30 @@
             {{ form.error_messages.invalid_login}} <!-- display the form errors if they exist -->
         {% endif %}
         <input type="submit" class="btn btn-primary" value="Войти">
-
-    </form>
+        <p><a href="#" onclick="OpenOTPEl.show()">Я не помню пароль</a></p>
+        <form action="{% url 'accounts:register' %}"></form>
+        <button type="button" class="btn btn-light" onclick="errorAlert('Го спать!', 'id_username')">Зарегистрироваться</button>
+        </form>
     </div>
+
+<!-- Modal OTP for Password Reset-->
+    <div class="modal fade" id="OpenOTPModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog  modal-dialog-centered">
+              <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                      {{ form_otp }}
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                    <button class="btn btn-success" type="submit" id="addpackage">Добавить</button>
+                  </div>
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'accounts.js' %}"></script>
+
 
 {% endblock %}

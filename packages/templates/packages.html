@@ -26,16 +26,15 @@
     </div>
 
     <!-- Packages list -->
-    <div class="col-8 mt-5" id="packageslist">
+    <div class="col-12 mt-5" id="packageslist">
         <h2 class="text-center mb-4 pagetitle">Отправления {{user.username}}</h2>
         {% if not packages %}
-        <div class="text-center mt-1" id="notracks">
+        <div class="text-center mt-3" id="notracks">
             Добавьте трек-номер, чтобы узнать статус отправления
         </div>
         {% endif %}
         {% for package in packages %}
-
-        <div class="card mt-1" id="track_{{ package.package_id }}">
+        <div class="card mt-2" id="track_{{ package.package_id }}">
             <div class="card-body">
                 <button type="button" class="btn-close float-end  btn-del" onclick="DeleteTrackId('{{ package.package_id }}')" aria-label="Удалить"></button>
             {% if package.desc %}
@@ -46,10 +45,8 @@
                 <h3 class="card-title">{{ package.package_id }}</h3>
                 <h6 class="card-subtitle mb-2 text-body-secondary">{{ package.package_id.get_status_display }} {{ package.package_id.status_change_date|date:"d.m.Y H:i" }}</h6>
             {% endif %}
-
             </div>
         </div>
-
         {% endfor %}
 
     </div>
@@ -57,8 +54,8 @@
 
 
 <!-- Button Package Add -->
-    <div  class="col-8 mt-5 text-center">
-        <button type="button" class="btn btn-primary btn-lg" id="trackidAddOpenModalBtn">
+    <div  class="col-12 mt-4 mb-4 text-center">
+        <button type="button" class="btn btn-success btn-lg" id="trackidAddOpenModalBtn">
           Добавить трек-номер
         </button>
     </div>
@@ -75,7 +72,7 @@
             <form method="post" class="" id="addpackageform"  data-url="{% url 'packages:add' %}">
                 {% csrf_token %}
                 <div class="form-floating">
-                    <input class="form-control mt-2" type="text" placeholder="Введите трек-номер" aria-label="Введите трек-номер" id="id_trackid" name="trackid">
+                    <input class="form-control mt-2" type="text" placeholder="Введите трек-номер" aria-label="Введите трек-номер" id="id_trackid" name="trackid" maxlength="50">
                     <label for="id_trackid">Трек-номер</label>
                 </div>
                 <div class="form-floating">

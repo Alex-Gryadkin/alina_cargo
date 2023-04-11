@@ -23,6 +23,8 @@ class AuthForm(AuthenticationForm):
     }
 
 
+class OTPInput(forms.Form):
+    otp_code = forms.CharField(min_length=6, max_length=6)
 
 
 

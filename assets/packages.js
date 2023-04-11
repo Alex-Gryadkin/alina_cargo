@@ -19,19 +19,6 @@ function DeleteTrackId(trackid) {
     trackidDelModalEl.show()
 }
 
-function errorAlert(errorMessage,inputId){
-    $('#'+inputId).after('<div id="alertfor' + inputId + '" class="erroralert invalid-feedback">' + errorMessage + '</div')
-    $('#alertfor' + inputId).fadeIn('slow')
-    if (inputId=='') {return}
-    $('#'+inputId).addClass('is-invalid')
-
-}
-function formReset(formId){
-    $('#'+formId).trigger('reset')
-    $(':input','#'+formId).removeClass('is-invalid')
-    $('.erroralert','#'+formId).remove()
-}
-
 $(document).ready(function(){
 
     $('#trackidAddOpenModalBtn').click(function(){
@@ -40,13 +27,13 @@ $(document).ready(function(){
 
     $('#id_trackid').bind("change keyup input click", function() {
             if (this.value.match(/[^0-9a-zA-Z\s]/g)) {
-                errorAlert('Только латинские буквы и цифры')
+                errorAlert('Только латинские буквы и цифры','id_trackid')
                 this.value = this.value.replace(/[^0-9a-zA-Z\s]/g, '')
                 }
         })
+
     $('#addpackage').click(function(){
         packageData = $('#addpackageform').serialize();
-
         $.ajax({
             url: $('#addpackageform').data('url'),
             type: 'post',
@@ -62,7 +49,7 @@ $(document).ready(function(){
                 else {
                     trackidAddModalEl.hide()
                     formReset('addpackageform')
-                    newTrackDiv = '<div class="card mt-1" id="track_' + response.packageid + '" style="display:none">'
+                    newTrackDiv = '<div class="card mt-2" id="track_' + response.packageid + '" style="display:none">'
                     newTrackDiv += '<div class="card-body"><button type="button" class="btn-close float-end  btn-del" onclick="DeleteTrackId(\'' + response.packageid + '\')" aria-label="Удалить"></button>'
                     if (response.desc==''){
                         newTrackDiv += '<h3 class="card-title">' + response.packageid + '</h3>'

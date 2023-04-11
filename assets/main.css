@@ -1,1 +1,17 @@
+body {
 
+    background: rgb(2,0,36);
+    background-image: url("/static/img/pattern1.png"), linear-gradient(135deg, rgba(2,0,36,1) 0%, rgba(50,75,178,1) 40%, rgba(116,82,248,1) 100%);
+}
+ html,body{
+    height:100%;
+    margin: 0;
+
+    background-attachment: fixed;
+ }
+#notracks, .pagetitle {
+    color: white;
+}
+.erroralert {
+    display
+}

@@ -19,10 +19,17 @@ function DeleteTrackId(trackid) {
     trackidDelModalEl.show()
 }
 
-function errorAlert(errorMessage){
-    $('#errorallert').html(errorMessage)
-    $('#errorallert').fadeIn('slow')
+function errorAlert(errorMessage,inputId){
+    $('#'+inputId).after('<div id="alertfor' + inputId + '" class="erroralert invalid-feedback">' + errorMessage + '</div')
+    $('#alertfor' + inputId).fadeIn('slow')
+    if (inputId=='') {return}
+    $('#'+inputId).addClass('is-invalid')
 
+}
+function formReset(formId){
+    $('#'+formId).trigger('reset')
+    $(':input','#'+formId).removeClass('is-invalid')
+    $('.erroralert','#'+formId).remove()
 }
 
 $(document).ready(function(){
@@ -47,26 +54,25 @@ $(document).ready(function(){
             success: function(response){
                 $('#notracks').remove()
                 if (response.errorMessage==1){
-                    errorAlert('Трек-номер уже был добавлен ранее')
+                    errorAlert('Трек-номер уже был добавлен ранее', 'id_trackid')
                 }
                 else if (response.errorMessage==2){
-                    alert('херня, а не код, давай по-новой')
+                    errorAlert('Введите корректный трек-номер', 'id_trackid')
                 }
                 else {
                     trackidAddModalEl.hide()
+                    formReset('addpackageform')
                     newTrackDiv = '<div class="card mt-1" id="track_' + response.packageid + '" style="display:none">'
                     newTrackDiv += '<div class="card-body"><button type="button" class="btn-close float-end  btn-del" onclick="DeleteTrackId(\'' + response.packageid + '\')" aria-label="Удалить"></button>'
                     if (response.desc==''){
                         newTrackDiv += '<h3 class="card-title">' + response.packageid + '</h3>'
-                        newTrackDiv += '<h6 class="card-subtitle mb-2 text-body-secondary">' + response.status + '</h6>'
+                        newTrackDiv += '<h6 class="card-subtitle mb-2 text-body-secondary">' + response.status + ' ' + response.changedate + '</h6>'
                     }
                     else {
                         newTrackDiv += '<h3 class="card-title">' + response.desc + '</h3>'
-                        newTrackDiv += '<h6 class="card-subtitle mb-2 text-body-secondary">' + response.status +' '+ response.changedate +'</h6>'
-                        newTrackDiv += '<p class="card-text">' + response.packageid + '</p></div></div>'
+                        newTrackDiv += '<h6 class="card-subtitle mb-2 text-body-secondary">' + response.status + ' ' + response.changedate + '</h6>'
+                        newTrackDiv += '<p class="card-text">Трек-номер: ' + response.packageid + '</p></div></div>'
                     }
-
-
                     $('#packageslist').append(newTrackDiv)
                     $('#track_' + response.packageid).fadeIn('slow')
                 }

@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from datetime import datetime
 
 # Create your models here.
 class Packages(models.Model):
@@ -22,7 +23,11 @@ class Packages(models.Model):
     )
     status_change_date = models.DateTimeField(auto_now_add=True)
     def __str__(self):
-        return self.id
+        return str(self.id) + ' : ' + self.status_change_date.strftime("%d.%m.%Y %H:%M")
+
+    def save(self, *args, **kwargs):
+        self.status_change_date = datetime.now()
+        super().save(*args, **kwargs)
 
 class UserPackages(models.Model):
     user_id = models.ForeignKey(User, default=None, on_delete=models.CASCADE)

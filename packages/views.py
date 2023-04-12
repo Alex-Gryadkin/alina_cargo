@@ -5,11 +5,21 @@ from django.views.generic import View
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.utils.html import escape
+from django.db.models import Case, When, Value, IntegerField
 
 @login_required(login_url='accounts:login')
 def packages_list(request):
     form = forms.AddPackage()
     packages = UserPackages.objects.select_related('package_id').filter(user_id=request.user)
+    packages = packages.annotate(
+        status_order=Case(
+            When(package_id__status='tut', then=Value(0)),
+            When(package_id__status='eha', then=Value(2)),
+            When(package_id__status='new', then=Value(3)),
+            When(package_id__status='vse', then=Value(4)),
+            output_field=IntegerField(),
+        )
+    ).order_by('status_order')
     return render(request, 'packages.html', {'packages': packages, 'form': form})
 
 class PackagesDelete(View):

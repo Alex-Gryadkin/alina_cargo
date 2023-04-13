@@ -26,10 +26,11 @@ $(document).ready(function(){
     })
 
     $('#id_trackid').bind("change keyup input click", function() {
-            if (this.value.match(/[^0-9a-zA-Z\s]/g)) {
+            if ($(this).val().match(/[^0-9a-zA-Z\s]/g)) {
                 errorAlert('Только латинские буквы и цифры','id_trackid')
-                this.value = this.value.replace(/[^0-9a-zA-Z\s]/g, '')
+                $(this).val($(this).val().replace(/[^0-9a-zA-Z\s]/g, ''))
                 }
+            $(this).val($(this).val().toUpperCase())
         })
 
     $('#addpackage').click(function(){
@@ -49,17 +50,11 @@ $(document).ready(function(){
                 else {
                     trackidAddModalEl.hide()
                     formReset('addpackageform')
-                    newTrackDiv = '<div class="card mt-2" id="track_' + response.packageid + '" style="display:none">'
+                    newTrackDiv = '<div class="card ' + response.statustheme + ' mt-2" id="track_' + response.packageid + '" style="display:none">'
                     newTrackDiv += '<div class="card-body"><button type="button" class="btn-close float-end  btn-del" onclick="DeleteTrackId(\'' + response.packageid + '\')" aria-label="Удалить"></button>'
-                    if (response.desc==''){
-                        newTrackDiv += '<h3 class="card-title">' + response.packageid + '</h3>'
-                        newTrackDiv += '<h6 class="card-subtitle mb-2 text-body-secondary">' + response.status + ' ' + response.changedate + '</h6>'
-                    }
-                    else {
-                        newTrackDiv += '<h3 class="card-title">' + response.desc + '</h3>'
-                        newTrackDiv += '<h6 class="card-subtitle mb-2 text-body-secondary">' + response.status + ' ' + response.changedate + '</h6>'
-                        newTrackDiv += '<p class="card-text">Трек-номер: ' + response.packageid + '</p></div></div>'
-                    }
+                    newTrackDiv += '<h3 class="card-title">' + (response.desc ? response.desc : response.packageid) + '</h3>'
+                    newTrackDiv += '<h6 class="card-subtitle mb-2 text-body-secondary status-'+ response.status +'">' + response.statusname + ' ' + response.changedate + '</h6>'
+                    newTrackDiv += '<p class="card-text">Трек-номер: ' + response.packageid + '</p></div></div>'
                     $('#packageslist').append(newTrackDiv)
                     $('#track_' + response.packageid).fadeIn('slow')
                 }

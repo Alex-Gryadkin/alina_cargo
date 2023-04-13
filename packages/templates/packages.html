@@ -34,17 +34,13 @@
         </div>
         {% endif %}
         {% for package in packages %}
-        <div class="card mt-2" id="track_{{ package.package_id.id }}">
+        <div class="card {{ package.status_theme }} mt-2" id="track_{{ package.package_id.id }}">
             <div class="card-body">
                 <button type="button" class="btn-close float-end  btn-del" onclick="DeleteTrackId('{{ package.package_id.id }}')" aria-label="Удалить"></button>
-            {% if package.desc %}
-                <h3 class="card-title">{{ package.desc }}</h3>
-                <h6 class="card-subtitle mb-2 text-body-secondary">{{ package.package_id.get_status_display }} {{ package.package_id.status_change_date|date:"d.m.Y H:i" }}</h6>
+                <h3 class="card-title">{% if package.desc %}{{ package.desc }}{% else %}{{package.package_id.id }}{% endif %}</h3>
+                <h6 class="card-subtitle mb-2">{{ package.package_id.get_status_display }} {{ package.package_id.status_change_date|date:"d.m.Y H:i" }}</h6>
                 <p class="card-text">Трек-номер: {{ package.package_id.id }}</p>
-            {% else %}
-                <h3 class="card-title">{{ package.package_id.id }}</h3>
-                <h6 class="card-subtitle mb-2 text-body-secondary">{{ package.package_id.get_status_display }} {{ package.package_id.status_change_date|date:"d.m.Y H:i" }}</h6>
-            {% endif %}
+
             </div>
         </div>
         {% endfor %}

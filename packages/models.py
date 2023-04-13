@@ -23,7 +23,7 @@ class Packages(models.Model):
     )
     status_change_date = models.DateTimeField(auto_now_add=True)
     def __str__(self):
-        return str(self.id) + ' : ' + self.status_change_date.strftime("%d.%m.%Y %H:%M")
+        return str(self.id) #+ ' : ' + self.status_change_date.strftime("%d.%m.%Y %H:%M")
 
     def save(self, *args, **kwargs):
         self.status_change_date = datetime.now()

@@ -12,7 +12,7 @@ function DeleteTrackId(trackid) {
             },
             success: function(response){
                 trackidDelModalEl.hide()
-                $('#track_'+response.id).fadeOut('fast');
+                $('#track_'+response.id).fadeOut('slow', function(){$(this).remove()});
             }
         })
     })

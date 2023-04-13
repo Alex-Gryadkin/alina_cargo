@@ -1,11 +1,14 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UsernameField
 from django.utils.translation import gettext_lazy as lazy
+from . import models
+
+
 
 
 class AuthForm(AuthenticationForm):
 
-    username = UsernameField(max_length=10, min_length=10, widget=forms.TextInput(attrs={"autofocus": True,
+    username = UsernameField(min_length=10, max_length=10, widget=forms.TextInput(attrs={"autofocus": True,
                                                                                          'class': 'form-control',
                                                                                          'type': 'tel',
                                                                                          'placeholder': 'Номер телефона'}))
@@ -26,5 +29,19 @@ class AuthForm(AuthenticationForm):
 class OTPInput(forms.Form):
     otp_code = forms.CharField(min_length=6, max_length=6)
 
+
+class RegisterForm(forms.ModelForm):
+
+    username = UsernameField(required=True,max_length=10, min_length=10, widget=forms.TextInput(attrs={"autofocus": True,
+                                                                                                        'class': 'form-control',
+                                                                                                        'type': 'tel',
+                                                                                                        'placeholder': 'Номер телефона'}))
+    fullname = UsernameField(required=True, max_length=40, widget=forms.TextInput(attrs={"autofocus": True,
+                                                                                         'class': 'form-control',
+                                                                                         'placeholder': 'Имя и Фамилия'}))
+
+    class Meta:
+        model = models.Cities
+        fields = ['city']
 
 

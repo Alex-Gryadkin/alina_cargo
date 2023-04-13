@@ -1,0 +1,18 @@
+{% extends 'index.html' %}
+
+{% block content %}
+
+<body>
+
+        <form action="{% url 'accounts:register' %}" method="post">
+            {% csrf_token %}
+            {{form.username}}
+            {{form.city}}
+            {{form.fullname}}
+            <input type="submit" class="btn btn-primary" value="Продолжить">
+        </form>
+
+</body>
+
+
+{% endblock %}

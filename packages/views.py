@@ -5,12 +5,21 @@ from django.views.generic import View
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.utils.html import escape
-from django.db.models import Case, When, Value, IntegerField
+from django.db.models import Case, When, Value, IntegerField, CharField
 
 @login_required(login_url='accounts:login')
 def packages_list(request):
     form = forms.AddPackage()
     packages = UserPackages.objects.select_related('package_id').filter(user_id=request.user)
+    packages = packages.annotate(
+        status_theme=Case(
+            When(package_id__status='tut', then=Value('text-bg-success')),
+            When(package_id__status='eha', then=Value('text-bg-info')),
+            When(package_id__status='new', then=Value('')),
+            When(package_id__status='vse', then=Value('text-bg-secondary')),
+            output_field=CharField(),
+        )
+    )
     packages = packages.annotate(
         status_order=Case(
             When(package_id__status='tut', then=Value(0)),
@@ -43,11 +52,22 @@ class PackagesAdd(View):
             if UserPackages.objects.filter(user_id=request.user).filter(package_id=thispack).count() == 0:
                 userpackagesave = UserPackages(user_id=request.user, package_id=thispack, desc=desc)
                 userpackagesave.save()
-                package = UserPackages.objects.select_related('package_id').get(id=userpackagesave.id)
+                packages = UserPackages.objects.select_related('package_id').filter(id=userpackagesave.id)
+                packages = packages.annotate(
+                    status_theme=Case(
+                        When(package_id__status='tut', then=Value('text-bg-success')),
+                        When(package_id__status='eha', then=Value('text-bg-info')),
+                        When(package_id__status='new', then=Value('')),
+                        When(package_id__status='vse', then=Value('text-bg-secondary')),
+                        output_field=CharField(),
+                    )
+                )
+                package = packages[0]
                 return JsonResponse({'errorMessage': 0,
                                      'packageid': package.package_id.id,
                                      'desc': package.desc,
-                                     'status': package.package_id.get_status_display(),
+                                     'statustheme': package.status_theme,
+                                     'statusname': package.package_id.get_status_display(),
                                      'changedate': package.package_id.status_change_date.strftime("%d.%m.%Y %H:%M")},
                                     status=200)
             else:

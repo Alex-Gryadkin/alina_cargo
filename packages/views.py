@@ -12,15 +12,6 @@ def packages_list(request):
     form = forms.AddPackage()
     packages = UserPackages.objects.select_related('package_id').filter(user_id=request.user)
     packages = packages.annotate(
-        status_theme=Case(
-            When(package_id__status='tut', then=Value('text-bg-success')),
-            When(package_id__status='eha', then=Value('text-bg-info')),
-            When(package_id__status='new', then=Value('')),
-            When(package_id__status='vse', then=Value('text-bg-secondary')),
-            output_field=CharField(),
-        )
-    )
-    packages = packages.annotate(
         status_order=Case(
             When(package_id__status='tut', then=Value(0)),
             When(package_id__status='eha', then=Value(2)),
@@ -28,7 +19,7 @@ def packages_list(request):
             When(package_id__status='vse', then=Value(4)),
             output_field=IntegerField(),
         )
-    ).order_by('status_order')
+    ).order_by('status_order','package_id__status_change_date')
     return render(request, 'packages.html', {'packages': packages, 'form': form})
 
 class PackagesDelete(View):
@@ -53,20 +44,11 @@ class PackagesAdd(View):
                 userpackagesave = UserPackages(user_id=request.user, package_id=thispack, desc=desc)
                 userpackagesave.save()
                 packages = UserPackages.objects.select_related('package_id').filter(id=userpackagesave.id)
-                packages = packages.annotate(
-                    status_theme=Case(
-                        When(package_id__status='tut', then=Value('text-bg-success')),
-                        When(package_id__status='eha', then=Value('text-bg-info')),
-                        When(package_id__status='new', then=Value('')),
-                        When(package_id__status='vse', then=Value('text-bg-secondary')),
-                        output_field=CharField(),
-                    )
-                )
                 package = packages[0]
                 return JsonResponse({'errorMessage': 0,
                                      'packageid': package.package_id.id,
                                      'desc': package.desc,
-                                     'statustheme': package.status_theme,
+                                     'status': package.package_id.status,
                                      'statusname': package.package_id.get_status_display(),
                                      'changedate': package.package_id.status_change_date.strftime("%d.%m.%Y %H:%M")},
                                     status=200)

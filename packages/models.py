@@ -12,10 +12,10 @@ class Packages(models.Model):
         verbose_name='Трек'
     )
     status_choices = [
-        ('new', 'Добавлен'),
-        ('eha', 'В пути'),
-        ('tut', 'Ожидает'),
-        ('vse', 'Выдан')
+        ('new', '📝 Добавлен'),
+        ('eha', '🚚 В пути'),
+        ('tut', '🗿 Ожидает'),
+        ('vse', '🤝 Выдан')
     ]
     status = models.CharField(
         max_length = 3,

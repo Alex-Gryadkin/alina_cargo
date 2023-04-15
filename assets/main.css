@@ -14,16 +14,45 @@ html,body {
     color: white;
 }
 
-statusnew {
-    color: gray;
-    border:1px solid red;
+.cardtut {
+    border-color: #20c997;
 }
-.statuseha {
-    color: white;
+.cardtut .cardstart, .badgetut{
+    background-color: #20c997;
+    border-color: #20c997;
 }
-.statustut {
-    color: green;
+.cardeha {
+    border-color: #0dcaf0;
 }
-.statusvse {
-    color: #FF0000;
+.cardeha .cardstart, .badgeeha{
+    background-color: #0dcaf0;
+    border-color: #0dcaf0;
 }
+.cardnew {
+    border-color: #ccc;
+}
+.cardnew .cardstart, .badgenew{
+    background-color: #ccc;
+    color: #333;
+    border-color: #ccc;
+}
+.cardvse {
+    border-color: #565c64;
+}
+.cardvse .cardstart, .badgevse{
+    background-color: #565c64;
+    border-color: #565c64;
+}
+
+#filterwrap span {
+    cursor:pointer;
+}
+
+.selectedfilter {
+    background-color: rgba(0, 0, 0, .25);
+    color: #ccc;
+    border-color: #ccc;
+}
+
+
+

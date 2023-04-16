@@ -4,6 +4,8 @@ from django.contrib.auth.models import User
 
 
 class Cities(models.Model):
+    class Meta:
+        verbose_name_plural = 'Города'
     class City(models.TextChoices):
         ALMATY = 'ALA', 'Алматы'
         ASTANA = 'AST', 'Астана'
@@ -32,6 +34,5 @@ class CargoUser(models.Model):
 class OTPStorage(models.Model):
     phone = models.CharField(max_length=10)
     otp = models.CharField(max_length=6)
-    uuid = models.UUIDField(default=uuid.uuid4)
 
 

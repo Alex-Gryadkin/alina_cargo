@@ -37,7 +37,7 @@ class RegisterForm(UserCreationForm):
                                                                                          'class': 'form-control',
                                                                                          'type': 'tel',
                                                                                          'placeholder': 'Введите ваше имя и фамилию'}))
-    city = forms.ChoiceField(choices=models.Cities.City.choices, label= 'Выберите город доставки товаров')
+    city = forms.ChoiceField(choices=models.Cities.City.choices, label='Выберите город доставки товаров')
     password1 = forms.CharField(widget=forms.TextInput(attrs={"autofocus": True,
                                                                                          'class': 'form-control',
                                                                                          'type': 'tel',

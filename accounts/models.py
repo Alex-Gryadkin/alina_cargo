@@ -24,6 +24,7 @@ class CargoUser(models.Model):
     full_name = models.CharField(max_length=40)
     city = models.OneToOneField(Cities, on_delete=models.SET_NULL, null=True)
     cargo_code = models.CharField(max_length=15)
+    is_activated = models.BooleanField(default=False)
 
     USERNAME_FIELD = "user"
 

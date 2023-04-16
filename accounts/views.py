@@ -19,9 +19,6 @@ def login_view(request):
 
 
 def register_view(request):
-    print(request.POST.get('username'))
-    print(request.POST.get('out_otp'))
-    print(request.POST.get('in_otp'))
     form = RegisterForm()
     if request.POST.get('username') and request.POST.get('out_otp'):
         out_otp = request.POST.get('out_otp')
@@ -31,7 +28,7 @@ def register_view(request):
             return render(request, 'other_user_info.html', {'add_info_form': form,
                                                             'username': username})
         else:
-            # add error - otp is incorrect
+            # add error - otp is incorrect (errors variable and sent in context)
             return render(request, 'OTP_input.html', {'username': username,
                                                       'out_otp': out_otp})
 
@@ -40,6 +37,7 @@ def register_view(request):
         profile = User.objects.filter(username=username)
         if profile.exists():                                             # change to 'no'
             out_otp = random.randint(100000, 999999)
+            # add aoutofield in OTPstorage model (datetime)
             sms = SMSC()
             sms.send_sms(f'7{username}', f'Проверочный код: {out_otp}')  # !!! refreshing the page resends OTP
             return render(request, 'OTP_input.html', {'username': username,

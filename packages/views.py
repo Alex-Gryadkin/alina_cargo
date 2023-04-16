@@ -51,7 +51,7 @@ class PackagesAdd(View):
                                      'status': package.package_id.status,
                                      'statusname': package.package_id.get_status_display(),
                                      'changedate': package.package_id.status_change_date.strftime("%d.%m.%Y %H:%M")},
-                                    status=200)
+                                      status=200)
             else:
                 return JsonResponse({'errorMessage': 1})
         return JsonResponse({'errorMessage': 2})

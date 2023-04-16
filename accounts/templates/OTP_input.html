@@ -1,0 +1,23 @@
+{% extends 'index.html' %}
+
+{% block content %}
+
+<body>
+
+        <form action="{% url 'accounts:register' %}" method="post">
+            {% csrf_token %}
+            <div>
+                <input name="in_otp" class="form-control" type="text" id="in_otp" placeholder="Введите короткий номер, отправленный в SMS" maxlength="6">
+                <input name="username" id="username" value="{{username}}" type="hidden">
+                <input name="out_otp" id="out_otp" value="{{out_otp}}" type="hidden" >
+            </div>
+            {{ username }}
+            {{ out_otp }}
+
+            <button class="btn btn-primary" type="submit" id="submit" >Продолжить</button>
+        </form>
+
+</body>
+
+{% endblock %}
+

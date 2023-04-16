@@ -12,24 +12,57 @@ function DeleteTrackId(trackid) {
             },
             success: function(response){
                 trackidDelModalEl.hide()
-                $('#track_'+response.id).fadeOut('fast');
+                $('#track_'+response.id).fadeOut('slow', function(){
+                    $(this).remove();
+                    UpdateFilters();
+                });
+
             }
         })
     })
     trackidDelModalEl.show()
 }
 
+function UpdateFilters(){
+    let filterHTML = ''
+    let statuses = {
+          "tut": "Ожидает",
+          "eha": "В пути",
+          "new": "Добавлен",
+          "vse": "Выдан"
+        };
+    $.each(statuses, function(status,statusname){
+        let currentcount = $('.card'+status).length
+        if (currentcount) {
+            filterHTML += '<span id="filter' + status + '" class="badge m-1 badge' + status
+            if ($('.card'+status+':hidden').length==currentcount) {
+                filterHTML += ' selectedfilter'
+            }
+            filterHTML +=  '" onclick="ToggleFilter(\'' + status + '\')">' + statusname + ' <span class="badge rounded-pill text-bg-light">' + currentcount + '</span></span>'
+        }
+    })
+    $('#filterwrap').html(filterHTML);
+}
+
+function ToggleFilter(status){
+    $('.card'+status).toggle('fast')
+    $('.badge'+status).toggleClass('selectedfilter')
+}
+
 $(document).ready(function(){
+
+    UpdateFilters()
 
     $('#trackidAddOpenModalBtn').click(function(){
         trackidAddModalEl.show()
     })
 
     $('#id_trackid').bind("change keyup input click", function() {
-            if (this.value.match(/[^0-9a-zA-Z\s]/g)) {
+            if ($(this).val().match(/[^0-9a-zA-Z\s]/g)) {
                 errorAlert('Только латинские буквы и цифры','id_trackid')
-                this.value = this.value.replace(/[^0-9a-zA-Z\s]/g, '')
+                $(this).val($(this).val().replace(/[^0-9a-zA-Z\s]/g, ''))
                 }
+            $(this).val($(this).val().toUpperCase())
         })
 
     $('#addpackage').click(function(){
@@ -49,19 +82,18 @@ $(document).ready(function(){
                 else {
                     trackidAddModalEl.hide()
                     formReset('addpackageform')
-                    newTrackDiv = '<div class="card mt-2" id="track_' + response.packageid + '" style="display:none">'
+                    newTrackDiv = '<div class="card card' + response.status + ' mt-2 d-flex flex-row" id="track_' + response.packageid + '" style="display:none">'
+                    newTrackDiv += '<div class="cardstart p-2 rounded-start"></div>'
                     newTrackDiv += '<div class="card-body"><button type="button" class="btn-close float-end  btn-del" onclick="DeleteTrackId(\'' + response.packageid + '\')" aria-label="Удалить"></button>'
-                    if (response.desc==''){
-                        newTrackDiv += '<h3 class="card-title">' + response.packageid + '</h3>'
-                        newTrackDiv += '<h6 class="card-subtitle mb-2 text-body-secondary">' + response.status + ' ' + response.changedate + '</h6>'
-                    }
-                    else {
-                        newTrackDiv += '<h3 class="card-title">' + response.desc + '</h3>'
-                        newTrackDiv += '<h6 class="card-subtitle mb-2 text-body-secondary">' + response.status + ' ' + response.changedate + '</h6>'
-                        newTrackDiv += '<p class="card-text">Трек-номер: ' + response.packageid + '</p></div></div>'
-                    }
+                    newTrackDiv += '<h3 class="card-title">' + (response.desc ? response.desc : response.packageid) + '</h3>'
+                    newTrackDiv += '<h6 class="card-subtitle mb-2 text-body-secondary status-'+ response.status +'">' + response.statusname + ' ' + response.changedate + '</h6>'
+                    newTrackDiv += '<p class="card-text">Трек-номер: ' + response.packageid + '</p></div></div>'
                     $('#packageslist').append(newTrackDiv)
                     $('#track_' + response.packageid).fadeIn('slow')
+                    UpdateFilters()
+                    $('html, body').animate({
+                        scrollTop: $('#track_' + response.packageid).offset().top
+                    }, 2000);
                 }
             }
 

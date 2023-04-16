@@ -23,6 +23,8 @@ class CargoUser(models.Model):
     city = models.OneToOneField(Cities, on_delete=models.SET_NULL, null=True)
     cargo_code = models.CharField(max_length=15)
 
+    USERNAME_FIELD = "user"
+
     def __str__(self):
         return self.user
 
@@ -30,4 +32,6 @@ class CargoUser(models.Model):
 class OTPStorage(models.Model):
     phone = models.CharField(max_length=10)
     otp = models.CharField(max_length=6)
+    uuid = models.UUIDField(default=uuid.uuid4)
+
 

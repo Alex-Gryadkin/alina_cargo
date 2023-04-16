@@ -1,7 +1,8 @@
 from django import forms
-from django.contrib.auth.forms import AuthenticationForm, UsernameField
+from django.contrib.auth.forms import AuthenticationForm, UsernameField, UserCreationForm
 from django.utils.translation import gettext_lazy as lazy
 from . import models
+from django.contrib.auth.models import User
 
 
 
@@ -26,22 +27,25 @@ class AuthForm(AuthenticationForm):
     }
 
 
-class OTPInput(forms.Form):
-    otp_code = forms.CharField(min_length=6, max_length=6)
+class RegisterForm(UserCreationForm):
 
-
-class RegisterForm(forms.ModelForm):
-
-    username = UsernameField(required=True,max_length=10, min_length=10, widget=forms.TextInput(attrs={"autofocus": True,
-                                                                                                        'class': 'form-control',
-                                                                                                        'type': 'tel',
-                                                                                                        'placeholder': 'Номер телефона'}))
-    fullname = UsernameField(required=True, max_length=40, widget=forms.TextInput(attrs={"autofocus": True,
+    username = forms.CharField(min_length=10, max_length=10, widget=forms.TextInput(attrs={"autofocus": True,
                                                                                          'class': 'form-control',
-                                                                                         'placeholder': 'Имя и Фамилия'}))
-
+                                                                                         'type': 'tel',
+                                                                                         'placeholder': 'Номер телефона'}))
+    full_name = forms.CharField(max_length=40, widget=forms.TextInput(attrs={"autofocus": True,
+                                                                                         'class': 'form-control',
+                                                                                         'type': 'tel',
+                                                                                         'placeholder': 'Введите ваше имя и фамилию'}))
+    city = forms.ChoiceField(choices=models.Cities.City.choices, label= 'Выберите город доставки товаров', initial='2')
+    password1 = forms.CharField(widget=forms.TextInput(attrs={"autofocus": True,
+                                                                                         'class': 'form-control',
+                                                                                         'type': 'tel',
+                                                                                         'placeholder': 'Придумайте пароль'}))
+    password2 = forms.CharField(widget=forms.TextInput(attrs={"autofocus": True,
+                                                                                         'class': 'form-control',
+                                                                                         'type': 'tel',
+                                                                                         'placeholder': 'Повторите пароль'}))
     class Meta:
-        model = models.Cities
-        fields = ['city']
-
-
+        model = models.CargoUser
+        fields = ['username', 'full_name', 'city', 'password1', 'password2']

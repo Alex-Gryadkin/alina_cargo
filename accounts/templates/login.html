@@ -2,7 +2,7 @@
 
 {% block content %}
     <div class="col-5">
-        <form action="{% url 'accounts:login' %}" method="post">
+        <form action="{% url 'accounts:login' %}" method="post", content="">
             {% csrf_token %}
             <div class="input-group">
                 <span class="input-group-text">+7</span>
@@ -10,7 +10,7 @@
             </div>
             {{ form.password }}
             {% if form.errors %}
-                {{ form.error_messages.invalid_login}} <!-- display the form errors if they exist -->
+                {{ form.error_messages.invalid_login}}
             {% endif %}
             <input type="submit" class="btn btn-primary" value="Войти">
             <p><a href="" onclick="OpenOTPEl.show()">Я не помню пароль</a></p>

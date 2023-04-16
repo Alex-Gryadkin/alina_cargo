@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout
-from . forms import AuthForm, AuthenticationForm, OTPInput, RegisterForm
-from . models import CargoUser
+from . forms import AuthForm, RegisterForm
 from django.contrib.auth.models import User
+import random
+from sms.smsc_api import *
 
 
 def login_view(request):
@@ -18,17 +19,37 @@ def login_view(request):
 
 
 def register_view(request):
+    print(request.POST.get('username'))
+    print(request.POST.get('out_otp'))
+    print(request.POST.get('in_otp'))
     form = RegisterForm()
-    if request.method == 'POST':
-        user = request.POST.get('username')
-        profile = User.objects.filter(username=user)
-        if not profile.exists():
-            city = request.POST.get('city')
-            fullname = request.POST.get('fullname')
-            return redirect('accounts:otpinput')
-            #  add error - user already exists
+    if request.POST.get('username') and request.POST.get('out_otp'):
+        out_otp = request.POST.get('out_otp')
+        username = request.POST.get('username')
+        in_otp = request.POST.get('in_otp')
+        if in_otp == out_otp:
+            return render(request, 'other_user_info.html', {'add_info_form': form,
+                                                            'username': username})
+        else:
+            # add error - otp is incorrect
+            return render(request, 'OTP_input.html', {'username': username,
+                                                      'out_otp': out_otp})
+
+    if request.POST.get('username'):
+        username = request.POST.get('username')
+        profile = User.objects.filter(username=username)
+        if profile.exists():                                             # change to 'no'
+            out_otp = random.randint(100000, 999999)
+            sms = SMSC()
+            sms.send_sms(f'7{username}', f'Проверочный код: {out_otp}')  # !!! refreshing the page resends OTP
+            return render(request, 'OTP_input.html', {'username': username,
+                                                      'out_otp': out_otp})  # !!! out_otp is visible in html code
 
     return render(request, 'register.html', {'form': form})
+
+
+
+
 
 
 def otp_input_view(request):

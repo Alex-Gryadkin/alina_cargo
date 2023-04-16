@@ -3,7 +3,7 @@ var trackidAddModalEl = new bootstrap.Modal(document.getElementById('trackidAddM
 
 function DeleteTrackId(trackid) {
     $('#deltrackid').html(trackid)
-    $('#trackIdDelConfirmBtn').click(function(){
+    $('#trackIdDelConfirmBtn'.).click(function(){
         $.ajax({
             url:'del',
             type: 'get',

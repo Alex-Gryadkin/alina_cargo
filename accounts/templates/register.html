@@ -4,9 +4,10 @@
 
 <body>
 
-        <form action="{% url 'accounts:register' %}" method="post">
+        <form action="{% url 'accounts:register' %}" method="get">
             {% csrf_token %}
                 {{form.username}}
+                {{ error }}
             <input id="username" type="submit" class="btn btn-primary" value="Продолжить">
         </form>
 

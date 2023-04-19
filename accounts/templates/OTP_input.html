@@ -4,12 +4,12 @@
 
 <body>
 
-        <form action="{% url 'accounts:register' %}" method="post">
+        <form action="{% url 'accounts:register' %}" method="get">
             {% csrf_token %}
             <div>
                 <input name="in_otp" class="form-control" type="text" id="in_otp" placeholder="Введите короткий номер, отправленный в SMS" maxlength="6">
+                {{ error }}
                 <input name="username" id="username" value="{{username}}" type="hidden">
-                <input name="out_otp" id="out_otp" value="{{out_otp}}" type="hidden" >
             </div>
             {{ username }}
             {{ out_otp }}

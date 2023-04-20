@@ -6,7 +6,8 @@ from django.contrib.auth.models import User
 class Cities(models.Model):
     class Meta:
         verbose_name_plural = 'Города'
-    class City(models.TextChoices):
+    class City(models.TextChoices):  # refacrtor this part
+
         ALMATY = 'ALA', 'Алматы'
         ASTANA = 'AST', 'Астана'
 
@@ -20,19 +21,24 @@ class Cities(models.Model):
 
 
 class CargoUser(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='cargouser', max_length=10)
-    full_name = models.CharField(max_length=40)
-    city = models.OneToOneField(Cities, on_delete=models.SET_NULL, null=True)
+    username = models.OneToOneField(User, on_delete=models.CASCADE, related_name='cargouser', max_length=10)
+    full_name = models.CharField(max_length=40, unique=False)
+    city = models.ForeignKey(Cities, on_delete=models.SET_NULL, null=True)
     cargo_code = models.CharField(max_length=15)
+    is_activated = models.BooleanField(default=False)
 
     USERNAME_FIELD = "user"
 
     def __str__(self):
-        return self.user
+        return self.username
 
 
 class OTPStorage(models.Model):
     phone = models.CharField(max_length=10)
     otp = models.CharField(max_length=6)
+    date_added = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.phone
 
 

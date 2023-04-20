@@ -2,8 +2,10 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout
 from . forms import AuthForm, RegisterForm
 from django.contrib.auth.models import User
+from . models import OTPStorage, CargoUser, Cities
 import random
 from sms.smsc_api import *
+import datetime
 
 
 def login_view(request):
@@ -19,41 +21,78 @@ def login_view(request):
 
 
 def register_view(request):
-    print(request.POST.get('username'))
-    print(request.POST.get('out_otp'))
-    print(request.POST.get('in_otp'))
     form = RegisterForm()
-    if request.POST.get('username') and request.POST.get('out_otp'):
-        out_otp = request.POST.get('out_otp')
+    if request.method == 'POST':
         username = request.POST.get('username')
-        in_otp = request.POST.get('in_otp')
-        if in_otp == out_otp:
-            return render(request, 'other_user_info.html', {'add_info_form': form,
-                                                            'username': username})
-        else:
-            # add error - otp is incorrect
-            return render(request, 'OTP_input.html', {'username': username,
-                                                      'out_otp': out_otp})
+        form = RegisterForm(data=request.POST)
+        if form.is_valid():
+            full_name = form.cleaned_data.get('full_name')
+            city = Cities.objects.get(city=form.cleaned_data.get('city'))
+            user = form.save()
+            user_id = user.id
+            cargo_code = f'WINWIN-{city}{user_id}'
+            cargouser = CargoUser(username=user, full_name=full_name, city=city, cargo_code=cargo_code)
+            cargouser.save()
+            login(request, user)
+            return redirect('packages:list')
 
-    if request.POST.get('username'):
-        username = request.POST.get('username')
-        profile = User.objects.filter(username=username)
-        if profile.exists():                                             # change to 'no'
-            out_otp = random.randint(100000, 999999)
-            sms = SMSC()
-            sms.send_sms(f'7{username}', f'Проверочный код: {out_otp}')  # !!! refreshing the page resends OTP
+        return render(request, 'final_creation.html', {'form': form,
+                                                       'username': username})
+
+    if request.GET.get('username') and request.GET.get('in_otp'):
+        username = request.GET.get('username')
+        out_otp = OTPStorage.objects.get(phone=username).otp
+        in_otp = request.GET.get('in_otp')
+        if in_otp == out_otp:
+            return render(request, 'final_creation.html', {'form': form,
+                                                           'username': username})
+        else:
+            otp_error = "Код не совпадает"
             return render(request, 'OTP_input.html', {'username': username,
-                                                      'out_otp': out_otp})  # !!! out_otp is visible in html code
+                                                      'error': otp_error})
+
+    elif request.GET.get('username'):
+        username = request.GET.get('username')
+        profile = User.objects.filter(username=username)
+        if not profile.exists():
+            try:
+                otp_session = OTPStorage.objects.get(phone=username)
+            except OTPStorage.DoesNotExist:
+                otp_session = None
+            if otp_session:
+
+                otp_session_created = otp_session.date_added
+                now = datetime.datetime.now(otp_session_created.tzinfo)
+                time_delta = datetime.datetime.timestamp(now) - datetime.datetime.timestamp(otp_session_created)
+
+                if time_delta > 60:
+                    out_otp = random.randint(100000, 999999)
+                    otp_session.date_added = now
+                    otp_session.otp = out_otp
+                    otp_session.save()
+                    sms = SMSC()
+                    sms.send_sms(f'7{username}', f'Проверочный код: {out_otp}')
+                    return render(request, 'OTP_input.html', {'username': username})
+
+                else:
+                    return render(request, 'OTP_input.html', {'username': username})
+
+            else:
+                out_otp = random.randint(100000, 999999)
+                otp_session = OTPStorage(phone=username, otp=out_otp)
+                otp_session.save()
+                sms = SMSC()
+                sms.send_sms(f'7{username}', f'Проверочный код: {out_otp}')
+                return render(request, 'OTP_input.html', {'username': username,
+                                                          'out_otp': out_otp})  # later - delete out_otp
+        else:
+            user_exist_error = 'Пользователь с таким номером уже зарегистрирован'
+            return render(request, 'register.html', {'form': form,
+                                                     'error': user_exist_error})
 
     return render(request, 'register.html', {'form': form})
 
 
-
-
-
-
-def otp_input_view(request):
-    return render(request, 'OTP_input.html')
 
 # def password_reset(request):
 #     if request.method == 'POST':

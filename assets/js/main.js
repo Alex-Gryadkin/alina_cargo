@@ -20,3 +20,7 @@ function formReset(formId){
     $(':input','#'+formId).removeClass('is-invalid')
     $('.erroralert','#'+formId).remove()
 }
+
+function PhoneMask(){
+    $('input[type="tel"]').mask('(999)999-99-99');
+}

@@ -1,61 +1,50 @@
 {% extends 'index.html' %}
 {% load static %}
+{% load tz %}
 
+{% block title %}
+    WINWIN Cargo : {{user}}
+{% endblock %}
+
+{% block navtext %}
+    Отправления {{user.username}}
+{% endblock %}
+
+{% block subnav %}
+    <div class="col-12 text-center" id="filterwrap"></div>
+{% endblock %}
 
 {% block content %}
 
-    <!-- Modal Package delete -->
-
-    <div class="modal fade" id="trackidDelModal" tabindex="-1" aria-labelledby="trackidDelModalLabel" aria-hidden="true">
-
-      <div class="modal-dialog  modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="trackidDelModalLabel">Удалить трек-номер <strong><span id="deltrackid"></span></strong>?</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            Вы можете в любой момент добавить трек-номер снова
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
-            <button type="button" class="btn btn-danger" id="trackIdDelConfirmBtn">Удалить</button>
-          </div>
-        </div>
-      </div>
-    </div>
+<div class="row align-items-top h-100">
 
     <!-- Packages list -->
-    <div class="col-12 mt-3" id="packageslist">
-        <h2 class="text-center mb-3 pagetitle">Отправления {{user.username}}</h2>
+    <div class="col-12 mt-5" id="packageslist">
         {% if not packages %}
         <div class="text-center mt-3" id="notracks">
             Добавьте трек-номер, чтобы узнать статус отправления
         </div>
         {% endif %}
-        <div class="text-center" id="filterwrap"></div>
+
         {% for package in packages %}
         <div class="card card{{ package.package_id.status }} mt-2 flex-row" id="track_{{ package.package_id.id }}">
             <div class="cardstart p-2 rounded-start"></div>
             <div class="card-body">
                 <button type="button" class="btn-close float-end  btn-del" onclick="DeleteTrackId('{{ package.package_id.id }}')" aria-label="Удалить"></button>
                 <h3 class="card-title">{% if package.desc %}{{ package.desc }}{% else %}{{package.package_id.id }}{% endif %}</h3>
-                <h6 class="card-subtitle mb-2">{{ package.package_id.get_status_display }} {{ package.package_id.status_change_date|date:"d.m.Y H:i" }}</h6>
+                <h6 class="card-subtitle mb-2">{{ package.package_id.get_status_display }} {{ package.package_id.status_change_date|localtime|date:"d.m.Y H:i" }}</h6>
                 <p class="card-text">Трек-номер: {{ package.package_id.id }}</p>
 
             </div>
         </div>
         {% endfor %}
 
-    </div>
-
-
-
 <!-- Button Package Add -->
-    <div  class="col-12 mt-4 mb-4 text-center">
-        <button type="button" class="btn btn-success btn-lg" id="trackidAddOpenModalBtn">
-          Добавить трек-номер
-        </button>
+        <div  class="mt-3 mb-4 text-center" id="addtrackwrap">
+            <button type="button" class="btn btn-success btn-lg" id="trackidAddOpenModalBtn">
+              Добавить трек-номер
+            </button>
+        </div>
     </div>
 
 <!-- Modal Package Add -->
@@ -86,6 +75,27 @@
         </div>
       </div>
     </div>
-    <script src="{% static 'packages.js' %}"></script>
 
+<!-- Modal Package delete -->
+
+    <div class="modal fade" id="trackidDelModal" tabindex="-1" aria-labelledby="trackidDelModalLabel" aria-hidden="true">
+      <div class="modal-dialog  modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="trackidDelModalLabel">Удалить трек-номер <strong><span id="deltrackid"></span></strong>?</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            Вы можете в любой момент добавить трек-номер снова
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+            <button type="button" class="btn btn-danger" id="trackIdDelConfirmBtn">Удалить</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="{% static 'js/packages.js' %}"></script>
+</div>
 {% endblock %}

@@ -93,16 +93,48 @@ def register_view(request):
     return render(request, 'register.html', {'form': form})
 
 
+def password_reset_view(request):
+    #
+    username = request.POST.get('email')
+    user = User.objects.filter(username=username)
+    if user:
+        out_otp = random.randint(100000, 999999)
+        request.session['username'] = request.POST['username']
+        try:
+            otp_session = OTPStorage.objects.get(phone=username)
+        except OTPStorage.DoesNotExist:
+            otp_session = None
+        if otp_session:
 
-# def password_reset(request):
-#     if request.method == 'POST':
-#         form = OTPInput(data=request.POST)
-#         if form.is_valid():
-#             pass
-#     else:
-#         form = OTPInput()
-#     return render(request, 'otp_input.html', {'form': form})
+            otp_session_created = otp_session.date_added
+            now = datetime.datetime.now(otp_session_created.tzinfo)
+            time_delta = datetime.datetime.timestamp(now) - datetime.datetime.timestamp(otp_session_created)
+
+            if time_delta > 60:
+                out_otp = random.randint(100000, 999999)
+                otp_session.date_added = now
+                otp_session.otp = out_otp
+                otp_session.save()
+                sms = SMSC()
+                sms.send_sms(f'7{username}', f'Проверочный код: {out_otp}')
+                return render(request, 'OTP_input.html', {'username': username})
+
+            else:
+                return render(request, 'OTP_input.html', {'username': username})
+
+        else:
+            out_otp = random.randint(100000, 999999)
+            otp_session = OTPStorage(phone=username, otp=out_otp)
+            otp_session.save()
+            sms = SMSC()
+            sms.send_sms(f'7{username}', f'Проверочный код: {out_otp}')
+            return render(request, 'OTP_input.html', {'username': username,
+                                                      'out_otp': out_otp})  # later - delete out_otp
 
 
+    return render(request, 'password_reset.html')
 
+
+def send_password_otp_view(request):
+    return render(request, 'password_OTP_input.html')
 

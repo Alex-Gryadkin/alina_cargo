@@ -13,7 +13,7 @@
                 {{ form.error_messages.invalid_login}}
             {% endif %}
             <input type="submit" class="btn btn-primary" value="Войти">
-            <p><a href="" onclick="OpenOTPEl.show()">Я не помню пароль</a></p>
+            <p><a href="{% url 'accounts:password_reset' %}" >Я не помню пароль</a></p>
             <a href="{% url 'accounts:register' %}" class="btn btn-light">Зарегистрироваться</a>
         </form>
 

@@ -34,8 +34,18 @@ class RegisterForm(UserCreationForm):
                                                                                          'type': 'tel',
                                                                                          'placeholder': 'Номер телефона'}))
     full_name = forms.CharField(max_length=40, widget=forms.TextInput(attrs={"autofocus": True,
+                                                                                         'class': 'form-control col-2',
+                                                                                         'type': 'text',
+                                                                                         'placeholder': 'Введите ваше имя и фамилию',}))
+    city = forms.ChoiceField(choices=models.Cities.City.choices, label= 'Выберите город доставки товаров')
+    password1 = forms.CharField(widget=forms.TextInput(attrs={"autofocus": True,
                                                                                          'class': 'form-control',
-                                                                                         'type': 'tel',
-                                                                                         'placeholder': 'Введите ваше имя и фамилию'}))
-    city = forms.ChoiceField(choices=models.Cities.City.choices, label='Выберите город доставки товаров')
-
+                                                                                         'type': 'password',
+                                                                                         'placeholder': 'Придумайте пароль'}))
+    password2 = forms.CharField(widget=forms.TextInput(attrs={"autofocus": True,
+                                                                                         'class': 'form-control',
+                                                                                         'type': 'password',
+                                                                                         'placeholder': 'Повторите пароль'}))
+    class Meta:
+        model = models.CargoUser
+        fields = ['username', 'full_name', 'city', 'password1', 'password2']

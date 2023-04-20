@@ -10,8 +10,8 @@ from django.db.models import Case, When, Value, IntegerField, CharField
 @login_required(login_url='accounts:login')
 def packages_list(request):
     form = forms.AddPackage()
-    packages = UserPackages.objects.select_related('package_id').filter(user_id=request.user)
-    packages = packages.annotate(
+    packages_qs = UserPackages.objects.select_related('package_id').filter(user_id=request.user)
+    packages_qs = packages_qs.annotate(
         status_order=Case(
             When(package_id__status='tut', then=Value(0)),
             When(package_id__status='eha', then=Value(2)),
@@ -20,7 +20,8 @@ def packages_list(request):
             output_field=IntegerField(),
         )
     ).order_by('status_order','package_id__status_change_date')
-    return render(request, 'packages.html', {'packages': packages, 'form': form})
+
+    return render(request, 'packages.html', {'packages': packages_qs, 'form': form})
 
 class PackagesDelete(View):
     def get(self, request):

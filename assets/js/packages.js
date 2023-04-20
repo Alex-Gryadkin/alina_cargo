@@ -88,12 +88,12 @@ $(document).ready(function(){
                     newTrackDiv += '<h3 class="card-title">' + (response.desc ? response.desc : response.packageid) + '</h3>'
                     newTrackDiv += '<h6 class="card-subtitle mb-2 text-body-secondary status-'+ response.status +'">' + response.statusname + ' ' + response.changedate + '</h6>'
                     newTrackDiv += '<p class="card-text">Трек-номер: ' + response.packageid + '</p></div></div>'
-                    $('#packageslist').append(newTrackDiv)
+                    $('#addtrackwrap').before(newTrackDiv)
                     $('#track_' + response.packageid).fadeIn('slow')
                     UpdateFilters()
                     $('html, body').animate({
                         scrollTop: $('#track_' + response.packageid).offset().top
-                    }, 2000);
+                    });
                 }
             }
 

@@ -1,8 +1,7 @@
-from django.contrib import admin
+from django.contrib import admin, messages
 from accounts.models import Cities, CargoUser
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
-from django.contrib import admin, messages
 from django.utils.translation import ngettext
 
 admin.site.register(Cities)

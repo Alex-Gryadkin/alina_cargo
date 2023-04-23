@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'accounts',
     'packages',
     'import_export',
+    'pages',
 ]
 
 MIDDLEWARE = [

@@ -3,7 +3,7 @@ from django.contrib.auth import login, logout
 from .forms import AuthForm, RegisterForm
 from django.contrib.auth.models import User
 from .models import OTPStorage, CargoUser, Cities
-from . mixins import send_otp
+from .mixins import send_otp
 
 
 def login_view(request):
@@ -60,33 +60,6 @@ def register_view(request):
             user_exist_error = 'Пользователь с таким номером уже зарегистрирован'
             return render(request, 'register.html', {'form': form,
                                                      'error': user_exist_error})
-        try:
-            otp_session = OTPStorage.objects.get(phone=username)
-        except OTPStorage.DoesNotExist:
-            otp_session = None
-
-        out_otp = random.randint(100000, 999999)
-
-        if otp_session:
-            otp_session_created = otp_session.date_added
-            now = datetime.datetime.now(otp_session_created.tzinfo)
-            time_delta = datetime.datetime.timestamp(now) - datetime.datetime.timestamp(otp_session_created)
-
-            if time_delta < 60:
-                return render(request, 'OTP_input.html', {'username': username})
-
-            otp_session.date_added = now
-            otp_session.otp = out_otp
-
-        else:
-            otp_session = OTPStorage(phone=username, otp=out_otp)
-
-        otp_session.save()
-        sms = SMSC()
-        sms.send_sms(f'7{username}', f'Проверочный код: {out_otp}')
-        return render(request, 'OTP_input.html', {'username': username,
-                                                  'out_otp': out_otp})  # later - delete out_otp
-
         send_otp(username)
         return render(request, 'OTP_input.html', {'username': username})
 

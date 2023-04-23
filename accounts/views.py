@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout
 from .forms import AuthForm, RegisterForm
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 from .models import OTPStorage, CargoUser, Cities
 from .mixins import send_otp
 
@@ -142,4 +143,13 @@ def change_password(request):
 
     error = 'Вы ввели неверный текущий пароль'
     return render(request, 'change_password.html', {'error': error})
+
+@login_required(login_url='accounts:login')
+def profile_view(request):
+    cargodata = CargoUser.objects.get(username=request.user)
+    return render(request, 'profile.html', {'cargodata': cargodata})
+
+def logout_view(request):
+    logout(request)
+    return redirect('accounts:login')
 

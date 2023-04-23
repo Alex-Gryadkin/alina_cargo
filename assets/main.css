@@ -8,7 +8,10 @@ html,body {
     margin: 0;
     background-attachment: fixed;
  }
-
+.subnav {
+    background: rgb(2,0,36);
+    border: 1px solid red;
+}
 #notracks, .pagetitle {
     color: white;
 }

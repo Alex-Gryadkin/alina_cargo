@@ -23,4 +23,13 @@ function formReset(formId){
 
 function PhoneMask(){
     $('input[type="tel"]').mask('(999)999-99-99');
+    $('form').submit(function(){
+        $('input[type="tel"]').val($('input[type="tel"]').val().replaceAll(/[^0-9]/g,''));
+    });
+}
+
+function NavBar(){
+    $.ajax({
+
+    })
 }

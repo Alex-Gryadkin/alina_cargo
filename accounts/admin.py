@@ -1,8 +1,7 @@
 from django.contrib import admin, messages
 from accounts.models import Cities, CargoUser
-from django.contrib.auth.admin import UserAdmin
-from django.contrib.auth.models import User
 from django.utils.translation import ngettext
+from django.db.models import F
 
 
 @admin.action(description="Активировать")
@@ -36,8 +35,18 @@ def make_not_active(self, request, queryset):
 
 
 class CagroAdmin(admin.ModelAdmin):
-    list_display = ('username', 'is_activated', 'cargo_code', 'get_last_login')
+    list_display = ('username', 'is_activated', 'cargo_code', 'last_login')
     actions = [make_active, make_not_active]
+
+    def get_queryset(self, request):
+        qs = super(CagroAdmin, self).get_queryset(request)
+        qs = qs.annotate(last_login=F('username__last_login'))
+        return qs
+
+    def last_login(self, obj):
+        return obj.last_login
+
+    last_login.admin_order_field = 'last_login'
 
 
 admin.site.register(Cities)

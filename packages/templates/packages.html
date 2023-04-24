@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block navtext %}
-    Отправления {{user.username}}
+    {{cargo_code}}
 {% endblock %}
 
 {% block subnav %}
@@ -20,10 +20,15 @@
 
     <!-- Packages list -->
     <div class="col-12 pt-5" id="packageslist">
-        {% if not packages %}
-        <div class="text-center mb-5" id="notracks">
-            Добавьте трек-номер, чтобы узнать статус отправления
-        </div>
+        {% if not is_activated %}
+            <div class="alert alert-warning">
+
+                Ваш код не активирован. Обратитесь к Владычице карго-кодов и возмолите об активации.
+            </div>
+        {% elif not packages %}
+            <div class="alert alert-info text-center" id="notracks">
+                Добавьте трек-номер, чтобы узнать статус отправления
+            </div>
         {% endif %}
 
         {% for package in packages %}
@@ -40,11 +45,14 @@
         {% endfor %}
 
 <!-- Button Package Add -->
+        {% if is_activated %}
         <div  class="mt-3 mb-4 text-center" id="addtrackwrap">
             <button type="button" class="btn btn-success btn-lg" id="trackidAddOpenModalBtn">
               Добавить трек-номер
             </button>
         </div>
+        {% endif %}
+
     </div>
 
 <!-- Modal Package Add -->

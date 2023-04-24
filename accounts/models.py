@@ -25,12 +25,16 @@ class CargoUser(models.Model):
     full_name = models.CharField(max_length=40, unique=False)
     city = models.ForeignKey(Cities, on_delete=models.SET_NULL, null=True)
     cargo_code = models.CharField(max_length=15)
-    is_activated = models.BooleanField(default=False)
+    is_activated = models.BooleanField(default=False, verbose_name='Активен')
 
     USERNAME_FIELD = "user"
 
     def __str__(self):
-        return self.username
+        return str(self.username)
+
+    def get_last_login(self):
+        last_login = self.username.last_login
+        return last_login
 
 
 class OTPStorage(models.Model):

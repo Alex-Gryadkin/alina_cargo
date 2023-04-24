@@ -1,15 +1,19 @@
 from django.shortcuts import render, redirect
 from .models import Packages, UserPackages
+from accounts.models import CargoUser
 from . import forms
 from django.views.generic import View
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.utils.html import escape
-from django.db.models import Case, When, Value, IntegerField, CharField
+from django.db.models import Case, When, Value, IntegerField
 
 @login_required(login_url='accounts:login')
 def packages_list(request):
     form = forms.AddPackage()
+    cargouser_qs = CargoUser.objects.get(username=request.user)
+    is_activated = cargouser_qs.is_activated
+    cargo_code = cargouser_qs.cargo_code
     packages_qs = UserPackages.objects.select_related('package_id').filter(user_id=request.user)
     packages_qs = packages_qs.annotate(
         status_order=Case(
@@ -21,7 +25,11 @@ def packages_list(request):
         )
     ).order_by('status_order','package_id__status_change_date')
 
-    return render(request, 'packages.html', {'packages': packages_qs, 'form': form})
+    return render(request, 'packages.html', {'packages': packages_qs,
+                                             'form': form,
+                                             'is_activated': is_activated,
+                                             'cargo_code': cargo_code
+                                             })
 
 class PackagesDelete(View):
     def get(self, request):

@@ -28,6 +28,19 @@ function PhoneMask(){
     });
 }
 
+function IconClipboardToggle(elem){
+    navigator.clipboard.writeText(elem.html())
+    let icon = (elem.next().html() == '📋') ? '✅' : '📋'
+    elem.next().html(icon)
+}
+
+function CopyToClipBoard(){
+    $('.toclipboard').after(' <a href="#" onclick="IconClipboardToggle($(this).prev())" title="Скопировать" class="text-decoration-none">📋</a>')
+    $('.toclipboard').click(function(){
+          IconClipboardToggle($(this))
+    })
+}
+
 function NavBar(){
     $.ajax({
 

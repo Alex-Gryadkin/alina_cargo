@@ -15,6 +15,9 @@ html,body {
 #notracks, .pagetitle {
     color: white;
 }
+.toclipboard, .toclipboard + a {
+    cursor:pointer;
+}
 
 .cardtut {
     border-color: #20c997;

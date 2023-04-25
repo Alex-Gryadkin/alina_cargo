@@ -51,7 +51,9 @@ function ToggleFilter(status){
 
 $(document).ready(function(){
 
-    UpdateFilters()
+    UpdateFilters();
+
+    CopyToClipBoard()
 
     $('#trackidAddOpenModalBtn').click(function(){
         trackidAddModalEl.show()

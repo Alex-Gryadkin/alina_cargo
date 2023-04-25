@@ -43,6 +43,24 @@ function CopyToClipBoard(){
 
 function NavBar(){
     $.ajax({
-
+        url:'/p/nav',
+        type: 'get',
+        success: function(response){
+            let nav_items_html = ''
+            $.each(response.navlist, function(i,cat){
+                if (cat.cat_title=='root') {
+                    $.each(cat.page, function(j,page){
+                        nav_items_html += '<li><a class="nav-link" href="/p/' + page.slug + '/">' + page.title + '</a></li>'
+                    })
+                } else {
+                    nav_items_html += '<li>' + cat.cat_title + '<ul>'
+                    $.each(cat.page, function(j,page){
+                        nav_items_html += '<li><a class="nav-link" href="/p/' + page.slug + '/">' + page.title + '</a></li>'
+                    })
+                    nav_items_html += '</ul></li>'
+                }
+            })
+            $('#navpages').append(nav_items_html)
+        }
     })
 }

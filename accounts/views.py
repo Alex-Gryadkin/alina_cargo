@@ -26,11 +26,13 @@ def register_view(request):
         form = RegisterForm(data=request.POST)
         if form.is_valid():
             user = form.save()
-            full_name = form.cleaned_data.get('full_name')
 
-            city = Cities.objects.get(city=form.cleaned_data.get('city'))
+            full_name = form.cleaned_data.get('full_name')
+            city_name = form.cleaned_data.get('city')
+            city = Cities.objects.get(city_name=city_name)
+
             user_id = user.id
-            cargo_code = f'WINWIN-{city}{user_id}'
+            cargo_code = f'WINWIN-{city.city_short_name}{user_id}'
             cargouser = CargoUser(username=user, full_name=full_name, city=city, cargo_code=cargo_code)
             cargouser.save()
 

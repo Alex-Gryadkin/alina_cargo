@@ -8,8 +8,8 @@
             {% csrf_token %}
                 <input name="username" id="username" value="{{username}}" type="hidden">
                 {{form.full_name}}
+                {{form.city.label}}
                 {{form.city}}
-                {{ form.city.label }}
                 {{form.password1}}
                 {{form.password2}}
             <input type="submit" class="btn btn-primary" value="Зарегистрироваться">

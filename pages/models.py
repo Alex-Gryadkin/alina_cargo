@@ -4,20 +4,22 @@ class Category(models.Model):
     class Meta:
         verbose_name_plural = 'Категории'
 
-    position = models.IntegerField(
-        verbose_name='Порядок',
-        default=1
-    )
-    title = models.CharField(
-        verbose_name='Название',
-        max_length=100,
-    )
+    is_root = models.BooleanField(verbose_name='Корневая',
+                                  default=False,
+                                  )
+    position = models.IntegerField(verbose_name='Порядок',
+                                   default=1
+                                   )
+    title = models.CharField(verbose_name='Название',
+                             max_length=100,
+                             )
 
     @classmethod
     def get_default_cat(cls):
         cat, created = cls.objects.get_or_create(
             title='root',
-            defaults=dict(position=0),
+            is_root=True,
+            position=0,
         )
         return cat.pk
 
@@ -29,6 +31,7 @@ class Page(models.Model):
     class Meta:
         verbose_name_plural = 'Страницы'
         default_related_name = 'pages'
+        ordering = ['position']
 
     title = models.CharField(
         verbose_name='Заголовок',
@@ -53,6 +56,7 @@ class Page(models.Model):
     category = models.ForeignKey(
         Category,
         default=Category.get_default_cat(),
+        # default='root',
         on_delete=models.SET_DEFAULT,
     )
 

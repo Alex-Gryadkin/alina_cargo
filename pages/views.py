@@ -13,12 +13,12 @@ def page_view(request, slug):
 
 class NavRender(View):
     def get(self, request):
-        # if request.headers.get('x-requested-with') != 'XMLHttpRequest':
-        #     return JsonResponse({'answer': 0}, status=404)
+        if request.headers.get('x-requested-with') != 'XMLHttpRequest':
+            return JsonResponse({'answer': 0}, status=404)
         navlist = {}
-        qs = Category.objects.prefetch_related('pages').all().order_by('position', 'pages__position')
+        qs = Category.objects.prefetch_related('pages').all().order_by('position')
         for cat in qs:
-            navlist[cat.title] = {'cat_title': cat.title}
+            navlist[cat.title] = {'cat_title': cat.title, 'is_root': cat.is_root}
             navlist[cat.title]['page'] = []
             for page in cat.pages.all():
                 navlist[cat.title]['page'].append({'slug': page.slug, 'title': page.title})

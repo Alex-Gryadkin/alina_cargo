@@ -15,6 +15,20 @@
 {% endblock %}
 
 {% block content %}
+<style>
+{% for status in statuses %}
+    .card{{ status.code }} {
+        border-color: {{ status.bg_color }};
+    }
+    .card{{ status.code }} .cardstart, .badge{{ status.code }}{
+        background-color: {{ status.bg_color }};
+        {% if status.txt_color %}color: {{ status.txt_color }};{% endif %}
+        border-color: {{ status.bg_color }};
+    }
+{% endfor %}
+</style>
+
+
 
 <div class="row align-items-top h-100">
 
@@ -37,7 +51,7 @@
             <div class="card-body">
                 <button type="button" class="btn-close float-end  btn-del" onclick="DeleteTrackId('{{ package.package_id.id }}')" aria-label="Удалить"></button>
                 <h3 class="card-title">{% if package.desc %}{{ package.desc }}{% else %}{{package.package_id.id }}{% endif %}</h3>
-                <h6 class="card-subtitle mb-2">{{ package.package_id.get_status_display }} {{ package.package_id.status_change_date|localtime|date:"d.m.Y H:i" }}</h6>
+                <h6 class="card-subtitle mb-2">{{ package.package_id.status.name }} {{ package.package_id.status_change_date|localtime|date:"d.m.Y H:i" }}</h6>
                 <p class="card-text">Трек-номер: {{ package.package_id.id }}</p>
 
             </div>

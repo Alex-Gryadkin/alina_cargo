@@ -48,7 +48,7 @@ function NavBar(){
         success: function(response){
             let nav_items_html = ''
             $.each(response.navlist, function(i,cat){
-                if (cat.cat_title=='root') {
+                if (cat.is_root) {
                     $.each(cat.page, function(j,page){
                         nav_items_html += '<li><a class="nav-link" href="/p/' + page.slug + '/">' + page.title + '</a></li>'
                     })

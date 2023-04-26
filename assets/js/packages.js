@@ -24,29 +24,36 @@ function DeleteTrackId(trackid) {
 }
 
 function UpdateFilters(){
-    let filterHTML = ''
-    let statuses = {
-          "tut": "Ожидает",
-          "eha": "В пути",
-          "new": "Добавлен",
-          "vse": "Выдан"
-        };
-    $.each(statuses, function(status,statusname){
-        let currentcount = $('.card'+status).length
-        if (currentcount) {
-            filterHTML += '<span id="filter' + status + '" class="badge m-1 badge' + status
-            if ($('.card'+status+':hidden').length==currentcount) {
-                filterHTML += ' selectedfilter'
+    $.ajax({
+            url:'statuslist',
+            type: 'get',
+            success: function(response){
+                let filterHTML = ''
+                statuses = response
+                $.each(statuses, function(status,statusname){
+                    let currentcount = $('.card'+status).length
+                    if (currentcount) {
+                        filterHTML += '<span id="filter' + status + '" class="badge m-1 badge' + status
+                        if ($('.card'+status+':hidden').length==currentcount) {
+                            filterHTML += ' selectedfilter'
+                        }
+                        filterHTML +=  '" onclick="ToggleFilter(\'' + status + '\')">' + statusname + ' <span class="badge rounded-pill text-bg-light">' + currentcount + '</span></span>'
+                    }
+                })
+                $('#filterwrap').html(filterHTML);
             }
-            filterHTML +=  '" onclick="ToggleFilter(\'' + status + '\')">' + statusname + ' <span class="badge rounded-pill text-bg-light">' + currentcount + '</span></span>'
-        }
-    })
-    $('#filterwrap').html(filterHTML);
+        })
+
 }
 
 function ToggleFilter(status){
     $('.card'+status).toggle('fast')
     $('.badge'+status).toggleClass('selectedfilter')
+    if (!$('.badge'+status).hasClass('selectedfilter')) {
+        $('html, body').animate({
+            scrollTop: $('.card'+status).first().offset().top - 100
+        });
+    }
 }
 
 $(document).ready(function(){

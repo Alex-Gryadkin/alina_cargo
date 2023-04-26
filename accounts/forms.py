@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UsernameField, UserCreationForm
 from django.utils.translation import gettext_lazy as lazy
-from . import models
+from .models import Cities
 from django.contrib.auth.models import User
 
 
@@ -37,4 +37,5 @@ class RegisterForm(UserCreationForm):
                                                                                          'class': 'form-control',
                                                                                          'type': 'tel',
                                                                                          'placeholder': 'Введите ваше имя и фамилию'}))
-    city = forms.ChoiceField(choices=models.Cities.City.choices, label='Выберите город доставки товаров')
+    city = forms.ModelChoiceField(queryset=Cities.objects, label='Выберите город доставки грузов')
+

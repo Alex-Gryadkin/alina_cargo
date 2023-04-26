@@ -24,11 +24,5 @@ html,body {
     cursor:pointer;
 }
 
-.selectedfilter {
-    background-color: rgba(0, 0, 0, .25);
-    color: #ccc;
-    border-color: #ccc;
-}
-
 
 

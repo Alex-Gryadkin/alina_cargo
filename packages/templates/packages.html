@@ -25,6 +25,11 @@
         {% if status.txt_color %}color: {{ status.txt_color }};{% endif %}
         border-color: {{ status.bg_color }};
     }
+    .selectedfilter {
+        background-color: rgba(0, 0, 0, .25);
+        color: #ccc;
+        border-color: #ccc;
+    }
 {% endfor %}
 </style>
 
@@ -53,7 +58,6 @@
                 <h3 class="card-title">{% if package.desc %}{{ package.desc }}{% else %}{{package.package_id.id }}{% endif %}</h3>
                 <h6 class="card-subtitle mb-2">{{ package.package_id.status.name }} {{ package.package_id.status_change_date|localtime|date:"d.m.Y H:i" }}</h6>
                 <p class="card-text">Трек-номер: {{ package.package_id.id }}</p>
-
             </div>
         </div>
         {% endfor %}

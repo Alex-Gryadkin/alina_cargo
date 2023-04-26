@@ -16,9 +16,14 @@
         <p><strong>Телефон:</strong> {{user.username}}</p>
         <p><strong>Имя и фамилия:</strong> {{cargodata.full_name}}</p>
         <p><strong>Город:</strong> {{cargodata.city}}</p>
-        <p><strong>Карго код:</strong> {{cargodata.cargo_code}}</p>
+        <p><strong>Карго код:</strong> <span class="toclipboard">{{cargodata.cargo_code}}</span></p>
         <p><a href="{% url 'accounts:change_password' %}">Сменить пароль</a></p>
     </div>
 </div>
 
+<script>
+$(document).ready(function(){
+    CopyToClipBoard()
+});
+</script>
 {% endblock %}

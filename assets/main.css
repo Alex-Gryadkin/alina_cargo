@@ -7,6 +7,7 @@ html,body {
     height:100%;
     margin: 0;
     background-attachment: fixed;
+    scroll-behavior: auto;
  }
 .subnav {
     background: rgb(2,0,36);
@@ -15,45 +16,12 @@ html,body {
 #notracks, .pagetitle {
     color: white;
 }
-
-.cardtut {
-    border-color: #20c997;
-}
-.cardtut .cardstart, .badgetut{
-    background-color: #20c997;
-    border-color: #20c997;
-}
-.cardeha {
-    border-color: #0dcaf0;
-}
-.cardeha .cardstart, .badgeeha{
-    background-color: #0dcaf0;
-    border-color: #0dcaf0;
-}
-.cardnew {
-    border-color: #ccc;
-}
-.cardnew .cardstart, .badgenew{
-    background-color: #ccc;
-    color: #333;
-    border-color: #ccc;
-}
-.cardvse {
-    border-color: #565c64;
-}
-.cardvse .cardstart, .badgevse{
-    background-color: #565c64;
-    border-color: #565c64;
+.toclipboard, .toclipboard + a {
+    cursor:pointer;
 }
 
 #filterwrap span {
     cursor:pointer;
-}
-
-.selectedfilter {
-    background-color: rgba(0, 0, 0, .25);
-    color: #ccc;
-    border-color: #ccc;
 }
 
 

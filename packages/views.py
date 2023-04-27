@@ -22,7 +22,7 @@ def packages_list(request):
                                              'form': form,
                                              'is_activated': is_activated,
                                              'cargo_code': cargo_code,
-                                             'statuses':statuses,
+                                             'statuses': statuses,
                                              })
 
 class PackagesDelete(View):
@@ -38,27 +38,30 @@ class PackagesAdd(View):
     def post(self, request):
         form = forms.AddPackage(request.POST)
         if not form.is_valid():
-            return JsonResponse({'errorMessage': 1})
+            return JsonResponse({'errorMessage': 2})
+        # getting data from form
         trackid = escape(form.cleaned_data.get('trackid'))
         desc = escape(form.cleaned_data.get('desc'))
+        # checking either such package exists (create if not)
         if Packages.objects.filter(id=trackid).count() == 0:
             newpackage = Packages(id=trackid)
             newpackage.save()
+        # getting current package data
         thispack = Packages.objects.get(id=trackid)
-        if UserPackages.objects.filter(user_id=request.user).filter(package_id=thispack).count() == 0:
-            userpackagesave = UserPackages(user_id=request.user, package_id=thispack, desc=desc)
-            userpackagesave.save()
-            packages = UserPackages.objects.select_related('package_id').filter(id=userpackagesave.id)
-            package = packages[0]
-            return JsonResponse({'errorMessage': 0,
-                                 'packageid': package.package_id.id,
-                                 'desc': package.desc,
-                                 'status': str(package.package_id.status),
-                                 'statusname': package.package_id.status.name,
-                                 'changedate': package.package_id.status_change_date.strftime("%d.%m.%Y %H:%M")},
-                                  status=200)
-        return JsonResponse({'errorMessage': 2})
-
+        # checking if package was already added by user
+        if UserPackages.objects.filter(user_id=request.user).filter(package_id=thispack).count() != 0:
+            return JsonResponse({'errorMessage': 1})
+        # creating new user package record and sending it back
+        userpackagesave = UserPackages(user_id=request.user, package_id=thispack, desc=desc)
+        userpackagesave.save()
+        package = UserPackages.objects.select_related('package_id').get(id=userpackagesave.id)
+        return JsonResponse({'errorMessage': 0,
+                             'packageid': package.package_id.id,
+                             'desc': package.desc,
+                             'status': str(package.package_id.status),
+                             'statusname': package.package_id.status.name,
+                             'changedate': package.package_id.status_change_date.strftime("%d.%m.%Y %H:%M")},
+                            status=200)
 
 class StatusList(View):
     def get(self, request):

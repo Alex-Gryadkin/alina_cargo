@@ -36,6 +36,7 @@ def make_not_active(self, request, queryset):
 
 class CagroAdmin(admin.ModelAdmin):
     list_display = ('username', 'is_activated', 'cargo_code', 'last_login')
+    search_fields = ['username__username']
     actions = [make_active, make_not_active]
 
     def get_queryset(self, request):

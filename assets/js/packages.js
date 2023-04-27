@@ -1,4 +1,5 @@
 function DeleteTrackId(trackid) {
+    var trackidDelModalEl = new bootstrap.Modal(document.getElementById('trackidDelModal'))
     $('#deltrackid').html(trackid)
     $('#trackIdDelConfirmBtn').click(function(){
         $.ajax({
@@ -54,7 +55,6 @@ function ToggleFilter(status){
 }
 
 $(document).ready(function(){
-    var trackidDelModalEl = new bootstrap.Modal(document.getElementById('trackidDelModal'))
     var trackidAddModalEl = new bootstrap.Modal(document.getElementById('trackidAddModal'))
 
     UpdateFilters();

@@ -57,9 +57,8 @@ class Page(models.Model):
     category = models.ForeignKey(
         Category,
         #default=Category.get_default_cat(),
-        to_field='title',
-        default='root',
-        on_delete=models.SET_DEFAULT,
+        on_delete=models.SET_NULL,
+        null=True,
     )
 
     def __str__(self):

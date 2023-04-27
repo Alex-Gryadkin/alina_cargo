@@ -9,14 +9,17 @@
     {{page.title}}
 {% endblock %}
 
+{% block js %}
+<script type="text/javascript" src="{% static 'js/page.js' %}"></script>
+{% endblock %}
+
 {% block content %}
 
 <div class="row align-items-top h-100">
     <div class="col-12 pt-3">
-        <div class="bg-body-secondary p-3 border-dark rounded">
+        <div class="bg-body-secondary p-3 border-dark rounded" id="pagecontent">
             {{page.content|safe}}
         </div>
     </div>
 </div>
-
 {% endblock %}

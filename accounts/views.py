@@ -5,9 +5,12 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from .models import OTPStorage, CargoUser, Cities
 from .mixins import send_otp
+from alina_cargo import settings
 
 
 def login_view(request):
+    if request.user.is_authenticated:
+        return redirect(settings.LOGIN_REDIRECT_URL)
     if request.method == 'POST':
         form = AuthForm(data=request.POST)
         if form.is_valid():
@@ -141,6 +144,7 @@ def change_password(request):
         user.set_password(new_password_1)
         user.save()
         message = 'Пароль успешно изменен'
+        login(request, user)
         return render(request, 'change_password.html', {'message': message})
 
     error = 'Вы ввели неверный текущий пароль'

@@ -12,16 +12,17 @@ class Category(models.Model):
                                    )
     title = models.CharField(verbose_name='Название',
                              max_length=100,
+                             unique=True,
                              )
 
-    @classmethod
-    def get_default_cat(cls):
-        cat, created = cls.objects.get_or_create(
-            title='root',
-            is_root=True,
-            position=0,
-        )
-        return cat.pk
+    # @classmethod
+    # def get_default_cat(cls):
+    #     cat, created = cls.objects.get_or_create(
+    #         title='root',
+    #         is_root=True,
+    #         position=0,
+    #     )
+    #     return cat.pk
 
     def __str__(self):
         return self.title
@@ -55,9 +56,9 @@ class Page(models.Model):
     )
     category = models.ForeignKey(
         Category,
-        default=Category.get_default_cat(),
-        # default=0,
-        on_delete=models.SET_DEFAULT,
+        #default=Category.get_default_cat(),
+        on_delete=models.SET_NULL,
+        null=True,
     )
 
     def __str__(self):

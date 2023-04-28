@@ -10,8 +10,8 @@ def make_active(self, request, queryset):
     self.message_user(
         request,
         ngettext(
-            "%d пользователь был успешно активирован.",
-            "%d пользователей было успешно активмировано.",
+            "%d код был успешно активирован.",
+            "Кодов было успешно активировано: %d.",
             updated,
         )
         % updated,
@@ -25,8 +25,8 @@ def make_not_active(self, request, queryset):
     self.message_user(
         request,
         ngettext(
-            "%d пользователь был успешно деактивирован.",
-            "%d пользователей было успешно деактивмировано.",
+            "%d код был успешно деактивирован.",
+            "Кодов было успешно деактивировано: %d.",
             updated,
         )
         % updated,
@@ -36,6 +36,7 @@ def make_not_active(self, request, queryset):
 
 class CagroAdmin(admin.ModelAdmin):
     list_display = ('username', 'is_activated', 'cargo_code', 'last_login')
+    search_fields = ['username__username', 'cargo_code']
     actions = [make_active, make_not_active]
 
     def get_queryset(self, request):

@@ -56,7 +56,7 @@ class Page(models.Model):
     category = models.ForeignKey(
         Category,
         default=Category.get_default_cat(),
-        # default='root',
+        # default=0,
         on_delete=models.SET_DEFAULT,
     )
 

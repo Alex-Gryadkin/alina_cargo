@@ -1,6 +1,7 @@
 {% extends 'index.html' %}
 
 {% block content %}
+
     <div class="col-5">
         <form action="{% url 'accounts:login' %}" method="post", content="">
             {% csrf_token %}
@@ -18,5 +19,4 @@
         </form>
 
     </div>
-
 {% endblock %}

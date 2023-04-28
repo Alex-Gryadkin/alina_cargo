@@ -27,6 +27,7 @@ class AuthForm(AuthenticationForm):
     }
 
 
+
 class RegisterForm(UserCreationForm):
 
     username = forms.CharField(min_length=10, max_length=10, widget=forms.TextInput(attrs={"autofocus": True,
@@ -38,4 +39,8 @@ class RegisterForm(UserCreationForm):
                                                                                          'type': 'tel',
                                                                                          'placeholder': 'Введите ваше имя и фамилию'}))
     city = forms.ModelChoiceField(queryset=Cities.objects, label='Выберите город доставки грузов')
+
+    error_messages = {
+        "password_mismatch": lazy("Пароли не совпадают"),
+    }
 

@@ -12,12 +12,14 @@
 {% block content %}
 
 <div class="row align-items-top h-100">
-    <div class="col-12 pt-4">
-        <p><strong>Телефон:</strong> {{user.username}}</p>
-        <p><strong>Имя и фамилия:</strong> {{cargodata.full_name}}</p>
-        <p><strong>Город:</strong> {{cargodata.city}}</p>
-        <p><strong>Карго код:</strong> <span class="toclipboard">{{cargodata.cargo_code}}</span></p>
-        <p><a href="{% url 'accounts:change_password' %}">Сменить пароль</a></p>
+    <div class="col-12 pt-3">
+        <div class="bg-body-secondary p-3 border-dark rounded" id="pagecontent">
+            <p><strong>Телефон:</strong> {{user.username}}</p>
+            <p><strong>Имя и фамилия:</strong> {{cargodata.full_name}}</p>
+            <p><strong>Город:</strong> {{cargodata.city}}</p>
+            <p><strong>Карго код:</strong> <span class="toclipboard">{{cargodata.cargo_code}}</span></p>
+            <p><a href="{% url 'accounts:change_password' %}">Сменить пароль</a></p>
+        </div>
     </div>
 </div>
 

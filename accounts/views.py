@@ -100,7 +100,7 @@ def password_reset_otp(request):
         return render(request, 'password_OTP_input.html', {'error': error_message})
 
     send_otp(username)
-    return render(request, 'password_OTP_input.html')
+    return render(request, 'password_OTP_input.html', {'username': username})
 
 
 def new_password(request):
@@ -137,7 +137,7 @@ def change_password(request):
 
     if new_password_1 != new_password_2:
         error = 'Новые пароли не совпадают'
-        return render(request, 'change_password.html', {'error':error})
+        return render(request, 'change_password.html', {'error': error})
 
     user = request.user
     if user.check_password(old_password):

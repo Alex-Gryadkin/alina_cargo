@@ -1,22 +1,45 @@
 {% extends 'index.html' %}
+{% load static %}
+
+{% block title %}
+Добро пожаловать!
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'js/register.js' %}"></script>
+{% endblock %}
 
 {% block content %}
-
-    <div class="col-5">
-        <form action="{% url 'accounts:login' %}" method="post", content="">
-            {% csrf_token %}
-            <div class="input-group">
-                <span class="input-group-text">+7</span>
-                {{ form.username }}
+<div class="row align-items-center text-center h-100">
+    <div class="col-12 mt-3 text-center">
+        <div class="bg-body-tertiary mx-auto rounded p-3" style="max-width:300pt">
+            <div class="mb-3">
+                <p class="h3">Добро пожаловать!</p>
+                <p class="form-text">WINWIN Cargo приветствует Вас!</p>
             </div>
-            {{ form.password }}
-            {% if form.errors %}
-                {{ form.error_messages.invalid_login}}
-            {% endif %}
-            <input type="submit" class="btn btn-primary" value="Войти">
-            <p><a href="{% url 'accounts:password_reset' %}" >Я не помню пароль</a></p>
-            <a href="{% url 'accounts:register' %}" class="btn btn-light">Зарегистрироваться</a>
-        </form>
+            <form action="{% url 'accounts:login' %}" method="post" content="">
+                {% csrf_token %}
+                <div class="input-group input-group-lg my-3">
+                    <span class="input-group-text">+7</span>
+                    {{ form.username }}
+                </div>
+                <div class="form-floating mb-3">
+                    {{form.password}}
+                    <label for="id_password" class="form-label">{{form.password.label}}</label>
+                </div>
 
+                {% if form.errors %}
+                <div class="invalid-feedback d-block mt-3">{{ form.error_messages.invalid_login}}</div>
+                {% endif %}
+
+                <input type="submit" class="btn btn-primary btn-lg mt-1" value="Войти">
+                <div class="form-text mt-3 px-3 d-flex justify-content-between">
+                    <a href="{% url 'accounts:register' %}">Зарегистрироваться</a>
+                    |
+                    <a href="{% url 'accounts:password_reset' %}" >Восстановить доступ</a>
+                </div>
+            </form>
+        </div>
     </div>
+</div>
 {% endblock %}

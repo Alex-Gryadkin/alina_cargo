@@ -84,7 +84,7 @@
     {% endif %}
 
 <!-- Main content block-->
-    <div class="container-sm justify-content-center h-100 pt-5">
+    <div class="container-sm justify-content-center h-100 {% if user.is_authenticated %}pt-5{% endif %}">
     {% block content%}
     {% endblock %}
     </div>

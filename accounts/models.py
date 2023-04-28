@@ -8,7 +8,7 @@ class Cities(models.Model):
     class Meta:
         verbose_name_plural = 'Города'
     def __str__(self):
-        return self.city_name
+        return str(self.city_name)
 
 class CargoUser(models.Model):
     username = models.OneToOneField(User, on_delete=models.CASCADE, related_name='cargouser', max_length=10)

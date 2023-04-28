@@ -5,6 +5,8 @@ class Cities(models.Model):
     city_name = models.CharField(max_length=30, null=True)
     city_short_name = models.CharField(max_length=5, null=True)
 
+    class Meta:
+        verbose_name_plural = 'Города'
     def __str__(self):
         return self.city_name
 
@@ -15,7 +17,7 @@ class CargoUser(models.Model):
     cargo_code = models.CharField(max_length=15)
     is_activated = models.BooleanField(default=False, verbose_name='Активен')
 
-    USERNAME_FIELD = "user"
+    # USERNAME_FIELD = "user"
 
     def __str__(self):
         return str(self.username)

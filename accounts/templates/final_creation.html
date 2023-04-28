@@ -12,6 +12,9 @@
                 {{form.city}}
                 {{form.password1}}
                 {{form.password2}}
+                {% if form.errors %}
+                    {{ form.error_messages.password_mismatch }}
+                {% endif %}
             <input type="submit" class="btn btn-primary" value="Зарегистрироваться">
         </form>
 

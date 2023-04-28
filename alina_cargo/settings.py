@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     'pages',
 ]
 
+LOGIN_REDIRECT_URL = '/packages/'
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

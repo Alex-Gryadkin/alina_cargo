@@ -1,46 +1,67 @@
 from django import forms
+from django.contrib.auth import password_validation
 from django.contrib.auth.forms import AuthenticationForm, UsernameField, UserCreationForm
 from django.utils.translation import gettext_lazy as lazy
 from .models import Cities
 from django.contrib.auth.models import User
 
 
-
-
 class AuthForm(AuthenticationForm):
-
-    username = UsernameField(min_length=10, max_length=10, widget=forms.TextInput(attrs={"autofocus": True,
-                                                                                         'class': 'form-control',
-                                                                                         'type': 'tel',
-                                                                                         'placeholder': 'Номер телефона'}))
+    username = UsernameField(min_length=10,
+                             max_length=10,
+                             widget=forms.TextInput(attrs={"autofocus": True,
+                                                           'class': 'form-control',
+                                                           'type': 'tel',
+                                                           'placeholder': 'Номер телефона'}))
     password = forms.CharField(
-        label=lazy("Password"),
+        label=lazy("Пароль"),
         strip=False,
         widget=forms.PasswordInput(attrs={"autocomplete": "current-password",
-                                          'class': 'form-control'}),
+                                          'class': 'form-control',
+                                          'placeholder': 'Пароль'}),
     )
     error_messages = {
         'invalid_login': lazy(
-            'Пожалуйста, проверьте корректность введенного номера телефона и пароля. Обратите внимание '
-            ',эти поля чувствительны к регистру'
+            'Пожалуйста, проверьте корректность введенного номера телефона и пароля. Обратите внимание'
+            ', эти поля чувствительны к регистру.'
         )
     }
 
 
-
 class RegisterForm(UserCreationForm):
+    username = forms.CharField(min_length=10,
+                               max_length=10,
+                               widget=forms.TextInput(attrs={"autofocus": True,
+                                                             'class': 'form-control',
+                                                             'type': 'tel',
+                                                             'placeholder': 'Номер телефона'}))
+    full_name = forms.CharField(max_length=40,
+                                label='Ваши имя и фамилия',
+                                widget=forms.TextInput(attrs={"autofocus": True,
+                                                              'class': 'form-control',
+                                                              'type': 'tel',
+                                                              'placeholder': 'Ваши имя и фамилия'}))
+    city = forms.ModelChoiceField(queryset=Cities.objects,
+                                  label='Выберите город доставки грузов',
+                                  widget=forms.Select(attrs={'class': 'form-select'}))
 
-    username = forms.CharField(min_length=10, max_length=10, widget=forms.TextInput(attrs={"autofocus": True,
-                                                                                         'class': 'form-control',
-                                                                                         'type': 'tel',
-                                                                                         'placeholder': 'Номер телефона'}))
-    full_name = forms.CharField(max_length=40, widget=forms.TextInput(attrs={"autofocus": True,
-                                                                                         'class': 'form-control',
-                                                                                         'type': 'tel',
-                                                                                         'placeholder': 'Введите ваше имя и фамилию'}))
-    city = forms.ModelChoiceField(queryset=Cities.objects, label='Выберите город доставки грузов')
+    password1 = forms.CharField(
+        label=("Введите пароль"),
+        strip=False,
+        widget=forms.PasswordInput(attrs={"autocomplete": "new-password",
+                                          "class": "form-control",
+                                          'placeholder': 'Введите пароль'}),
+        help_text=password_validation.password_validators_help_text_html(),
+    )
+    password2 = forms.CharField(
+        label=("Повторите пароль"),
+        widget=forms.PasswordInput(attrs={"autocomplete": "new-password",
+                                          "class": "form-control",
+                                          'placeholder': 'Повторите пароль'}),
+        strip=False,
+        help_text=("Введите повторно тот же пароль"),
+    )
 
     error_messages = {
         "password_mismatch": lazy("Пароли не совпадают"),
     }
-

@@ -1,24 +1,49 @@
 {% extends 'index.html' %}
 
+{% block title %}
+Регистрация: Шаг 3 из 3
+{% endblock %}
+
 {% block content %}
 
-<body>
+<div class="row align-items-center text-center h-100">
+    <div class="col-12 mt-3 text-center">
+        <div class="bg-body-tertiary mx-auto rounded p-3" style="max-width:300pt">
+            <div class="mb-3">
+                <p class="h3">Регистрация: Шаг 3 из 3</p>
+                <p class="form-text">
+                    Вы близки к финалу как никогда раньше!
+                    Заполните еще несколько полей и наслаждайтесь прелестью собственного карго-кода!
+                </p>
+            </div>
 
-        <form action="{% url 'accounts:register' %}" method="post">
-            {% csrf_token %}
+            <form action="{% url 'accounts:register' %}" method="post">
+                {% csrf_token %}
                 <input name="username" id="username" value="{{username}}" type="hidden">
-                {{form.full_name}}
-                {{form.city.label}}
-                {{form.city}}
-                {{form.password1}}
-                {{form.password2}}
+                <div class="form-floating mb-3">
+                    {{form.full_name}}
+                    <label for="id_full_name" class="form-label">{{form.full_name.label}}</label>
+                </div>
+                <div class="mb-3 text-start">
+                    <label for="id_city">{{form.city.label}}</label>
+                    {{form.city}}
+                </div>
+                <div class="form-floating mb-3">
+                    {{form.password1}}
+                    <label for="id_password1" class="form-label">{{form.password1.label}}</label>
+                </div>
+                <div class="form-floating mb-3">
+                    {{form.password2}}
+                    <label for="id_password2" class="form-label">{{form.password2.label}}</label>
+                </div>
                 {% if form.errors %}
-                    {{ form.error_messages.password_mismatch }}
+                    <div class="invalid-feedback d-block my-2">{{ form.error_messages.password_mismatch }}</div>
                 {% endif %}
-            <input type="submit" class="btn btn-primary" value="Зарегистрироваться">
-        </form>
-
-</body>
+                <input type="submit" class="btn btn-primary my-2" value="Зарегистрироваться">
+            </form>
+        </div>
+    </div>
+</div>
 
 
 {% endblock %}

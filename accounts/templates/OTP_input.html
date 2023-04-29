@@ -1,21 +1,45 @@
 {% extends 'index.html' %}
+{% load static %}
+
+{% block title %}
+Регистрация: Шаг 2 из 3
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'js/otp.js' %}"></script>
+{% endblock %}
+
 
 {% block content %}
 
-<body>
-
-        <form action="{% url 'accounts:register' %}" method="get">
-            {% csrf_token %}
-            <div>
-                <input name="in_otp" class="form-control" type="text"  placeholder="Введите короткий номер, отправленный в SMS" maxlength="6">
-                {{ error }}
-                <input name="username" value="{{username}}" type="hidden">
+<div class="row align-items-center text-center h-100">
+    <div class="col-12 mt-3 text-center">
+        <div class="bg-body-tertiary mx-auto rounded p-3" style="max-width:300pt">
+            <div class="mb-3">
+                <p class="h3">Регистрация: Шаг 2 из 3</p>
+                <p class="form-text">Код отправлен на номер телефона +7{{username}}</p>
             </div>
+            <form action="{% url 'accounts:register' %}" method="get">
+                {% csrf_token %}
+                <input name="username" value="{{username}}" type="hidden">
+                <div class="input-group input-group-lg my-0 mx-auto" style="max-width:250pt">
+                    <input name="in_otp" class="form-control" type="text"  placeholder="Код из SMS" maxlength="6" required>
+                    <input class="btn btn-success" type="submit" id="submit" value="&#10148;" >
+                </div>
+            </form>
+            {% if error %}
+            <div class="invalid-feedback d-block mt-3">{{ error }}</div>
+            {% endif %}
+            <form id="send_opt_again_form" action="{% url 'accounts:register' %}" method="get">
+                <input name="username" value="{{username}}" type="hidden">
+                <div class="form-text mt-3" id="timer_div">
+                    Повторно отправить код можно через <span id="timer">60</span> сек.
+                </div>
+            </form>
 
-            <button class="btn btn-primary" type="submit" id="submit" >Продолжить</button>
-        </form>
-
-</body>
+        </div>
+    </div>
+</div>
 
 {% endblock %}
 

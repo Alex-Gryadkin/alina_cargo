@@ -56,7 +56,7 @@
 
         {% for package in packages %}
         <div class="card card{{ package.package_id.status }} mt-2 flex-row" id="track_{{ package.package_id.id }}">
-            <div class="cardstart p-2 rounded-start"></div>
+            <div class="cardstart p-3 rounded-start"></div>
             <div class="card-body">
                 <button type="button" class="btn-close float-end  btn-del" onclick="DeleteTrackId('{{ package.package_id.id }}')" aria-label="Удалить"></button>
                 <h3 class="card-title">{% if package.desc %}{{ package.desc }}{% else %}{{package.package_id.id }}{% endif %}</h3>

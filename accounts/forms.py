@@ -3,7 +3,6 @@ from django.contrib.auth import password_validation
 from django.contrib.auth.forms import AuthenticationForm, UsernameField, UserCreationForm
 from django.utils.translation import gettext_lazy as lazy
 from .models import Cities
-from django.contrib.auth.models import User
 
 
 class AuthForm(AuthenticationForm):
@@ -43,14 +42,15 @@ class RegisterForm(UserCreationForm):
                                                               'placeholder': 'Ваши имя и фамилия'}))
     city = forms.ModelChoiceField(queryset=Cities.objects,
                                   label='Выберите город доставки грузов',
-                                  widget=forms.Select(attrs={'class': 'form-select'}))
+                                  widget=forms.Select(attrs={'class': 'form-select'}),
+                                  empty_label="Город не выбран")
 
     password1 = forms.CharField(
-        label=("Введите пароль"),
+        label=("Придумайте пароль"),
         strip=False,
         widget=forms.PasswordInput(attrs={"autocomplete": "new-password",
                                           "class": "form-control",
-                                          'placeholder': 'Введите пароль'}),
+                                          'placeholder': 'Придумайте пароль'}),
         help_text=password_validation.password_validators_help_text_html(),
     )
     password2 = forms.CharField(
@@ -65,3 +65,4 @@ class RegisterForm(UserCreationForm):
     error_messages = {
         "password_mismatch": lazy("Пароли не совпадают"),
     }
+

@@ -2,6 +2,10 @@ from django.contrib import admin, messages
 from accounts.models import Cities, CargoUser
 from django.utils.translation import ngettext
 from django.db.models import F
+from django.contrib import admin
+from .resources import UserResource
+from import_export.admin import ImportExportModelAdmin
+from .models import User
 
 
 @admin.action(description="Активировать")
@@ -50,5 +54,12 @@ class CagroAdmin(admin.ModelAdmin):
     last_login.admin_order_field = 'last_login'
 
 
+class UsersAdmin(ImportExportModelAdmin):
+    resource_class = UserResource
+    list_display = ('id', 'password', 'username')
+
+
 admin.site.register(Cities)
+admin.site.unregister(User)
+admin.site.register(User, UsersAdmin)
 admin.site.register(CargoUser, CagroAdmin)

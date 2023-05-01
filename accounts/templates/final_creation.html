@@ -37,7 +37,9 @@
                     <label for="id_password2" class="form-label">{{form.password2.label}}</label>
                 </div>
                 {% if form.errors %}
-                    <div class="invalid-feedback d-block my-2">{{ form.error_messages.password_mismatch }}</div>
+                {% for error in form.errors.password2 %}
+                    <div class="invalid-feedback d-block my-2">{{ error }}</div>
+                {% endfor %}
                 {% endif %}
                 <input type="submit" class="btn btn-primary my-2" value="Зарегистрироваться">
             </form>

@@ -42,7 +42,6 @@ def register_view(request):
             OTPStorage.objects.filter(phone=username).delete()
             login(request, user)
             return redirect('packages:list')
-
         return render(request, 'final_creation.html', {'form': form,
                                                        'username': username})
 

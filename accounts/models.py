@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+
 class Cities(models.Model):
     city_name = models.CharField(max_length=30, null=True)
     city_short_name = models.CharField(max_length=5, null=True)
@@ -15,7 +16,7 @@ class CargoUser(models.Model):
     full_name = models.CharField(max_length=40, unique=False)
     city = models.ForeignKey(Cities, on_delete=models.CASCADE, null=True)
     cargo_code = models.CharField(max_length=15)
-    is_activated = models.BooleanField(default=False, verbose_name='Активен')
+    is_activated = models.BooleanField(default=True, verbose_name='Активен')
 
     # USERNAME_FIELD = "user"
 

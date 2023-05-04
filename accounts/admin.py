@@ -38,13 +38,13 @@ def make_not_active(self, request, queryset):
     )
 
 
-class CagroAdmin(admin.ModelAdmin):
-    list_display = ('username', 'is_activated', 'cargo_code', 'last_login')
+class CargoAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = ('full_name', 'cargo_code', 'city_id', 'username_id', 'is_activated')
     search_fields = ['username__username', 'cargo_code']
     actions = [make_active, make_not_active]
 
     def get_queryset(self, request):
-        qs = super(CagroAdmin, self).get_queryset(request)
+        qs = super(CargoAdmin, self).get_queryset(request)
         qs = qs.annotate(last_login=F('username__last_login'))
         return qs
 
@@ -56,10 +56,10 @@ class CagroAdmin(admin.ModelAdmin):
 
 class UsersAdmin(ImportExportModelAdmin):
     resource_class = UserResource
-    list_display = ('id', 'password', 'username')
+    list_display = ('id', 'username', 'password')
 
 
 admin.site.register(Cities)
 admin.site.unregister(User)
 admin.site.register(User, UsersAdmin)
-admin.site.register(CargoUser, CagroAdmin)
+admin.site.register(CargoUser, CargoAdmin)

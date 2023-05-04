@@ -16,17 +16,13 @@
         <div class="bg-body-tertiary mx-auto rounded p-3" style="max-width:300pt">
             <div class="mb-3">
                 <p class="h3">Регистрация: Шаг 1 из 3</p>
-<!--                <p class="form-text">Укажите ваш номер телефона</p>-->
+                <p class="form-text">Введите ваш мобильный номер</p>
             </div>
 
             <form action="{% url 'accounts:register' %}" method="get">
-                {% csrf_token %}
                 <div class="input-group input-group-lg mx-auto" style="max-width:250pt">
                     <span class="input-group-text" id="basic-addon1">+7</span>
-<!--                    <div class="form-floating">-->
                         {{form.username}}
-<!--                        <label for="id_username">Ваш номер телефона</label>-->
-<!--                    </div>-->
                     <input type="submit" class="btn btn-success " value="&#10148;">
                 </div>
             </form>
@@ -35,7 +31,7 @@
             {% endif %}
             <div class="form-text mt-3">
                 Зарегистрированы? <a href="{% url 'accounts:login' %}">Войти</a>
-                или <a href="{% url 'accounts:password_reset' %}">восстановить доступ</a>
+                или <a href="{% url 'accounts:password_reset' %}">восстановить пароль</a>
             </div>
         </div>
     </div>

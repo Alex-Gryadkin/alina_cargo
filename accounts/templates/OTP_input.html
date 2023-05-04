@@ -20,7 +20,6 @@
                 <p class="form-text">Код отправлен на номер телефона +7{{username}}</p>
             </div>
             <form action="{% url 'accounts:register' %}" method="get">
-                {% csrf_token %}
                 <input name="username" value="{{username}}" type="hidden">
                 <div class="input-group input-group-lg my-0 mx-auto" style="max-width:250pt">
                     <input name="in_otp" class="form-control" type="text"  placeholder="Код из SMS" maxlength="6" required>

@@ -1,6 +1,5 @@
 from import_export import resources
-from .models import User
-
+from .models import User, CargoUser
 
 class UserResource(resources.ModelResource):
     class Meta:
@@ -8,4 +7,5 @@ class UserResource(resources.ModelResource):
         skip_unchanged = True
         import_id_fields = ('id', 'password', 'username')
         fields = ('id', 'password', 'username')
+
 

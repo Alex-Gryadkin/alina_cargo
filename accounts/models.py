@@ -18,7 +18,6 @@ class CargoUser(models.Model):
     cargo_code = models.CharField(max_length=15)
     is_activated = models.BooleanField(default=True, verbose_name='Активен')
 
-    # USERNAME_FIELD = "user"
 
     def __str__(self):
         return str(self.username)

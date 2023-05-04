@@ -22,7 +22,7 @@ function formReset(formId){
 }
 
 function PhoneMask(){
-    $('input[type="tel"]').mask('(999)999-99-99');
+    $('input[type="tel"]').mask('(999) 999-99-99');
     $('form').submit(function(){
         $('input[type="tel"]').val($('input[type="tel"]').val().replaceAll(/[^0-9]/g,''));
     });
@@ -30,12 +30,12 @@ function PhoneMask(){
 
 function IconClipboardToggle(elem){
     navigator.clipboard.writeText(elem.html())
-    let icon = (elem.next().html() == '📋') ? '✅' : '📋'
-    elem.next().html(icon)
+    elem.next().toggleClass("bi-files")
+    elem.next().toggleClass("bi-clipboard2-check")
 }
 
 function CopyToClipBoard(){
-    $('.toclipboard').after(' <a href="#" onclick="IconClipboardToggle($(this).prev())" title="Скопировать" class="text-decoration-none">📋</a>')
+    $('.toclipboard').after(' <a onclick="IconClipboardToggle($(this).prev())" title="Скопировать" class="bi bi-files d-inline text-decoration-none"></a>')
     $('.toclipboard').click(function(){
           IconClipboardToggle($(this))
     })

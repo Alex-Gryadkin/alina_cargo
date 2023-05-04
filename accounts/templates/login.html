@@ -31,11 +31,11 @@
                 <div class="invalid-feedback d-block mt-3">{{ form.error_messages.invalid_login}}</div>
                 {% endif %}
 
-                <input type="submit" class="btn btn-primary btn-lg mt-1" value="Войти">
+                <input type="submit" class="btn btn-primary btn-lg btn-block w-100" value="Войти">
                 <div class="form-text mt-3 px-3 d-flex justify-content-between">
                     <a href="{% url 'accounts:register' %}">Зарегистрироваться</a>
                     |
-                    <a href="{% url 'accounts:password_reset' %}" >Восстановить доступ</a>
+                    <a href="{% url 'accounts:password_reset' %}" >Восстановить пароль</a>
                 </div>
             </form>
         </div>

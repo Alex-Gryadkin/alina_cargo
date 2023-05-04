@@ -26,7 +26,7 @@
 
 <!-- Navigation -->
     {% if user.is_authenticated %}
-    <nav class="navbar fixed-top bg-body-tertiary pb-0">
+    <nav class="navbar fixed-top bg-body-tertiary pb-0 z-3">
         <div class="container-fluid justify-content-between ms-0 mb-2">
             <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -46,9 +46,6 @@
             </div>
             <div class="offcanvas-body">
                 <ul class="navbar-nav justify-content-end flex-grow-1 pe-3" id="navpages">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'packages:list' %}">Отправления</a>
-                    </li>
                 </ul>
             </div>
         </div>
@@ -59,17 +56,21 @@
 
         <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasProfile" aria-labelledby="offcanvasProfileLabel">
             <div class="offcanvas-header">
-                <h5 class="offcanvas-title" id="offcanvasProfileLabel">Профиль</h5>
+                <h5 class="offcanvas-title" id="offcanvasProfileLabel">{{ user.username }}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
             <div class="offcanvas-body">
                 <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'accounts:profile' %}">Профиль</a>
+                        <a class="nav-link" href="{% url 'packages:list' %}">Мои треки</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'accounts:profile' %}">Мой профиль</a>
                     </li>
                     <li>
                         <a class="nav-link" href="{% url 'accounts:logout' %}">Выйти</a>
                     </li>
+
                 </ul>
             </div>
         </div>
@@ -81,6 +82,10 @@
     </nav>
 <!--    -->
 <!-- end of Navigation-->
+    {% else %}
+    <div class="logo">
+        <img width=110 height="110" src="{% static 'img/logo.jpg' %}">
+    </div>
     {% endif %}
 
 <!-- Main content block-->

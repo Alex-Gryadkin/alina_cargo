@@ -1,4 +1,6 @@
 {% load static %}
+{% load custom_tags %}
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -26,17 +28,18 @@
 <!-- end of JS libs-->
 
 <!-- Navigation -->
-    {% if user.is_authenticated %}
     <nav class="navbar fixed-top bg-body-tertiary pb-0 z-3">
         <div class="container-fluid justify-content-between ms-0 mb-2">
-            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+            {% block leftnavbtn %}
+            <button class="navbar-toggler py-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+                <span class="bi bi-list"></span>
             </button>
+            {% endblock %}
             <span class="h3">
                 {% block navtext %}{% endblock %}
             </span>
             <button class="navbar-toggler py-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasProfile" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
-                <span>👤</span>
+                <span class=" bi bi-person"></span>
             </button>
         </div>
 
@@ -47,31 +50,43 @@
             </div>
             <div class="offcanvas-body">
                 <ul class="navbar-nav justify-content-end flex-grow-1 pe-3" id="navpages">
+                    {% nav_pages_list user.is_authenticated%}
                 </ul>
             </div>
         </div>
-        <script type="text/javascript">
-            NavBar()
-        </script>
 
 
         <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasProfile" aria-labelledby="offcanvasProfileLabel">
             <div class="offcanvas-header">
-                <h5 class="offcanvas-title" id="offcanvasProfileLabel">{{ user.username }}</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                <h5 class="offcanvas-title" id="offcanvasProfileLabel">
+                    {% if user.is_authenticated %}
+                        {{ user.get_username|put_mask }}
+                    {% else %}
+                        Авторизация
+                    {% endif %}
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
             <div class="offcanvas-body">
                 <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'packages:list' %}">Мои треки</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'accounts:profile' %}">Мой профиль</a>
-                    </li>
-                    <li>
-                        <a class="nav-link" href="{% url 'accounts:logout' %}">Выйти</a>
-                    </li>
-
+                    {% if user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'packages:list' %}">Мои треки</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'accounts:profile' %}">Мой профиль</a>
+                        </li>
+                        <li>
+                            <a class="nav-link" href="{% url 'accounts:logout' %}">Выйти</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'accounts:register' %}">Зарегистрироваться</a>
+                        </li>
+                        <li>
+                            <a class="nav-link" href="{% url 'accounts:login' %}">Войти</a>
+                        </li>
+                    {% endif %}
                 </ul>
             </div>
         </div>
@@ -83,14 +98,14 @@
     </nav>
 <!--    -->
 <!-- end of Navigation-->
-    {% else %}
+    {% if not user.is_authenticated %}
     <div class="logo">
         <img width=110 height="110" src="{% static 'img/logo.jpg' %}">
     </div>
     {% endif %}
 
 <!-- Main content block-->
-    <div class="container-sm justify-content-center h-100 {% if user.is_authenticated %}pt-5{% endif %}">
+    <div class="container-sm justify-content-center h-100 pt-5">
     {% block content%}
     {% endblock %}
     </div>

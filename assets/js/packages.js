@@ -93,9 +93,9 @@ $(document).ready(function(){
                     newTrackDiv = '<div class="card card' + response.status + ' mt-2 flex-row" id="track_' + response.packageid + '" style="display:none">'
                     newTrackDiv += '<div class="cardstart p-2 rounded-start"></div>'
                     newTrackDiv += '<div class="card-body"><button type="button" class="btn-close float-end btn-del" onclick="DeleteTrackId(\'' + response.packageid + '\')" aria-label="Удалить"></button>'
-                    newTrackDiv += '<h3 class="card-title">' + (response.desc ? response.desc : response.packageid) + '</h3>'
+                    newTrackDiv += '<h3 class="card-title">' + response.packageid + '</h3>'
                     newTrackDiv += '<h6 class="card-subtitle mb-2 text-body-secondary status-'+ response.status +'">' + response.statusname + ' ' + response.changedate + '</h6>'
-                    newTrackDiv += '<p class="card-text">Трек-номер: ' + response.packageid + '</p></div></div>'
+                    newTrackDiv += '<p class="card-text">' + response.desc + '</p></div></div>'
                     $('#addtrackwrap').before(newTrackDiv)
                     $('#track_' + response.packageid).fadeIn('slow')
                     UpdateFilters()

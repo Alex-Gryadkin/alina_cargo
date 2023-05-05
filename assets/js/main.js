@@ -31,36 +31,12 @@ function PhoneMask(){
 function IconClipboardToggle(elem){
     navigator.clipboard.writeText(elem.html())
     elem.next().toggleClass("bi-files")
-    elem.next().toggleClass("bi-clipboard2-check")
+    elem.next().toggleClass("bi-file-check")
 }
 
 function CopyToClipBoard(){
-    $('.toclipboard').after(' <a onclick="IconClipboardToggle($(this).prev())" title="Скопировать" class="bi bi-files d-inline text-decoration-none"></a>')
+    $('.toclipboard').after(' <a onclick="IconClipboardToggle($(this).prev())" title="Скопировать" class="bi bi-files d-inline text-decoration-none nav-link"></a>')
     $('.toclipboard').click(function(){
           IconClipboardToggle($(this))
-    })
-}
-
-function NavBar(){
-    $.ajax({
-        url:'/p/nav',
-        type: 'get',
-        success: function(response){
-            let nav_items_html = ''
-            $.each(response.navlist, function(i,cat){
-                if (cat.is_root) {
-                    $.each(cat.page, function(j,page){
-                        nav_items_html += '<li><a class="nav-link" href="/p/' + page.slug + '/">' + page.title + '</a></li>'
-                    })
-                } else {
-                    nav_items_html += '<li>' + cat.cat_title + '<ul>'
-                    $.each(cat.page, function(j,page){
-                        nav_items_html += '<li><a class="nav-link" href="/p/' + page.slug + '/">' + page.title + '</a></li>'
-                    })
-                    nav_items_html += '</ul></li>'
-                }
-            })
-            $('#navpages').append(nav_items_html)
-        }
     })
 }

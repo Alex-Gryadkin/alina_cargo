@@ -1,5 +1,6 @@
 {% extends 'index.html' %}
 {% load static %}
+{% load custom_tags %}
 
 {% block title %}
     Профиль
@@ -9,13 +10,19 @@
     Профиль
 {% endblock %}
 
+{% block leftnavbtn %}
+            <button class="navbar-toggler py-2" type="button">
+                <a href="{% url 'packages:list' %}" class="bi bi-arrow-left nav-link"></a>
+            </button>
+{% endblock %}
+
 {% block content %}
 
-<a href="{% url 'packages:list' %}" type="button" class="btn btn-light position-absolute ms-0 mt-5">< Назад</a>
+
 <div class="row align-items-center text-center h-100">
     <div class="col-12 pt-3 text-start">
         <div class="bg-body-secondary p-3 border-dark rounded" id="pagecontent">
-            <p><strong>Телефон:</strong> {{user.username}}</p>
+            <p><strong>Телефон:</strong> {{user.get_username|put_mask}}</p>
             <p><strong>Имя и фамилия:</strong> {{cargodata.full_name}}</p>
             <p><strong>Город:</strong> {{cargodata.city}}</p>
             <p><strong>Карго код:</strong> <span class="toclipboard">{{cargodata.cargo_code}}</span></p>
@@ -23,6 +30,7 @@
         </div>
     </div>
 </div>
+
 
 <script>
 $(document).ready(function(){

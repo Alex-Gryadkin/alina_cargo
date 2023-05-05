@@ -14,6 +14,9 @@ class Category(models.Model):
                              max_length=100,
                              unique=True,
                              )
+    public = models.BooleanField(verbose_name='Общий доступ',
+                                 default=False
+                                 )
 
     # @classmethod
     # def get_default_cat(cls):

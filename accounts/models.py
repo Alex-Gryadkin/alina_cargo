@@ -14,7 +14,7 @@ class Cities(models.Model):
 class CargoUser(models.Model):
     username = models.OneToOneField(User, on_delete=models.CASCADE, related_name='cargouser', max_length=10)
     full_name = models.CharField(max_length=40, unique=False)
-    city = models.ForeignKey(Cities, on_delete=models.CASCADE, null=True)
+    city = models.ForeignKey(Cities, on_delete=models.SET_NULL, null=True)
     cargo_code = models.CharField(max_length=15)
     is_activated = models.BooleanField(default=True, verbose_name='Активен')
 

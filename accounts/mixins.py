@@ -1,4 +1,4 @@
-from sms.smsc_api import *
+from SMS.smsc_api import *
 import random
 from . models import OTPStorage
 import datetime

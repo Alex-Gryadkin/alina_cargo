@@ -1,12 +1,12 @@
 from django.shortcuts import render, redirect
-from .models import Packages, UserPackages,Status
+from .models import Packages, UserPackages, Status
 from accounts.models import CargoUser
 from . import forms
 from django.views.generic import View
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.utils.html import escape
-from django.db.models import Case, When, Value, IntegerField
+from django.utils.timezone import localtime
 
 @login_required(login_url='accounts:login')
 def packages_list(request):
@@ -55,12 +55,13 @@ class PackagesAdd(View):
         userpackagesave = UserPackages(user_id=request.user, package_id=thispack, desc=desc)
         userpackagesave.save()
         package = UserPackages.objects.select_related('package_id').get(id=userpackagesave.id)
+
         return JsonResponse({'errorMessage': 0,
                              'packageid': package.package_id.id,
                              'desc': package.desc,
                              'status': str(package.package_id.status),
                              'statusname': package.package_id.status.name,
-                             'changedate': package.package_id.status_change_date.strftime("%d.%m.%Y %H:%M")},
+                             'changedate': localtime(package.package_id.status_change_date).strftime("%d.%m.%Y %H:%M")},
                             status=200)
 
 class StatusList(View):

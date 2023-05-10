@@ -2,8 +2,9 @@
 # SMSC.KZ API (smsc.kz) версия 2.0 (03.07.2019)
 
 from datetime import datetime
-from time import sleep
 import smtplib
+from dotenv import dotenv_values
+secrets = dotenv_values('.env')
 
 try:
 	from urllib import urlopen, quote
@@ -13,7 +14,7 @@ except ImportError:
 
 # Константы для настройки библиотеки
 SMSC_LOGIN = "alina1811"			# логин клиента
-SMSC_PASSWORD = "alinaAb@@"	# пароль
+SMSC_PASSWORD = secrets["SMS_KEY"]		# пароль
 SMSC_POST = False				# использовать метод POST
 SMSC_HTTPS = False				# использовать HTTPS протокол
 SMSC_CHARSET = "utf-8"			# кодировка сообщения (windows-1251 или koi8-r), по умолчанию используется utf-8

@@ -28,5 +28,5 @@ def send_otp(username):
 
     otp_session.save()
     sms = SMSC()
-    sms.send_sms(f'7{username}', f'Проверочный код: {out_otp}')
+    sms.send_sms(f'7{username}', f'WINWIN Cargo | Проверочный код: {out_otp}')
     return 'SUCCESS'

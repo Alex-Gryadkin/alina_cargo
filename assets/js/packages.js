@@ -66,9 +66,9 @@ $(document).ready(function(){
     })
 
     $('#id_trackid').bind("change keyup input click", function() {
-            if ($(this).val().match(/[^0-9a-zA-Z\s]/g)) {
+            if ($(this).val().match(/[^\d\w]/g)) {
                 errorAlert('Только латинские буквы и цифры','id_trackid')
-                $(this).val($(this).val().replace(/[^0-9a-zA-Z\s]/g, ''))
+                $(this).val($(this).val().replace(/[^\d\w]/g, ''))
                 }
             $(this).val($(this).val().toUpperCase())
         })

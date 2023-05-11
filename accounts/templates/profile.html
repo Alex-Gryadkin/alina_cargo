@@ -11,9 +11,11 @@
 {% endblock %}
 
 {% block leftnavbtn %}
-            <button class="navbar-toggler py-2" type="button">
-                <a href="{% url 'packages:list' %}" class="bi bi-arrow-left nav-link"></a>
-            </button>
+            <a href="{% url 'packages:list' %}">
+                <button class="navbar-toggler py-2" type="button">
+                    <span class="bi bi-arrow-left nav-link"></span>
+                </button>
+            </a>
 {% endblock %}
 
 {% block content %}
@@ -21,7 +23,7 @@
 
 <div class="row align-items-center text-center h-100">
     <div class="col-12 pt-3 text-start">
-        <div class="bg-body-secondary p-3 border-dark rounded" id="pagecontent">
+        <div class="bg-body-tertiary mx-auto rounded p-3" style="max-width:300pt">
             <p><strong>Телефон:</strong> {{user.get_username|put_mask}}</p>
             <p><strong>Имя и фамилия:</strong> {{cargodata.full_name}}</p>
             <p><strong>Город:</strong> {{cargodata.city}}</p>

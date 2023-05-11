@@ -4,6 +4,7 @@ from . models import OTPStorage
 import datetime
 
 
+
 def send_otp(username):
     try:
         otp_session = OTPStorage.objects.get(phone=username)

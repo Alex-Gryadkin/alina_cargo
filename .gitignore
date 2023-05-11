@@ -5,4 +5,4 @@ venv
 /venv
 .env
 winwin.pem
-db.sqlite3
+

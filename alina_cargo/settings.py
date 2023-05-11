@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 import os.path
 from pathlib import Path
 from dotenv import dotenv_values
+import config
 secrets = dotenv_values('.env')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.

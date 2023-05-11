@@ -38,7 +38,7 @@ class RegisterForm(UserCreationForm):
                                 label='Ваши имя и фамилия',
                                 widget=forms.TextInput(attrs={"autofocus": True,
                                                               'class': 'form-control',
-                                                              'type': 'tel',
+                                                              'type': 'text',
                                                               'placeholder': 'Ваши имя и фамилия'}))
     city = forms.ModelChoiceField(queryset=Cities.objects,
                                   label='Выберите город доставки грузов',

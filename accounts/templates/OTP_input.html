@@ -11,9 +11,11 @@
 {% endblock %}
 
 {% block leftnavbtn %}
-            <button class="navbar-toggler py-2" type="button">
-                <a href="{% url 'accounts:register' %}" class="bi bi-arrow-left nav-link"></a>
-            </button>
+            <a href="{% url 'accounts:register' %}">
+                <button class="navbar-toggler py-2" type="button">
+                    <span class="bi bi-arrow-left nav-link"></span>
+                </button>
+            </a>
 {% endblock %}
 
 

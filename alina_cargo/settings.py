@@ -29,9 +29,9 @@ SECRET_KEY = secrets['DJANGO_KEY']
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['18.208.214.207', 'www.winwincargo.kz', 'winwincargo.kz']
 
 
 # Application definition
@@ -144,8 +144,10 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'assets'),
 )
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+MEDIA_URL = 'media/'
+MEDIA_ROOT = '/home/ubuntu/alina_cargo/media'
+
+STATIC_ROOT = '/home/ubuntu/alina_cargo/static'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

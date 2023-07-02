@@ -1,0 +1,40 @@
+body {
+
+    background: rgb(2,0,36);
+    background-image: url("/static/img/pattern2.png"), linear-gradient(135deg, rgba(2,0,36,1) 0%, rgba(50,75,178,1) 40%, rgba(116,82,248,1) 100%);
+}
+html,body {
+    height:100%;
+    margin: 0;
+    background-attachment: fixed;
+    scroll-behavior: auto;
+ }
+.subnav {
+    background: rgb(2,0,36);
+    border: 1px solid red;
+}
+#notracks, .pagetitle {
+    color: white;
+}
+.toclipboard, .toclipboard + a {
+    cursor:pointer;
+}
+
+#filterwrap span {
+    cursor:pointer;
+}
+
+.logo {
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    top:10%;
+    width: 125px;
+    height: 125px;
+    background-image: url('/static/img/logo.png');
+    background-size: 125px 125px;
+    z-index: -1;
+}
+

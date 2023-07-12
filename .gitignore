@@ -5,9 +5,6 @@ venv
 /venv
 .env
 winwin.pem
-<<<<<<< HEAD
 db.sqlite3
-=======
-.env
-db.sqlite3
->>>>>>> 3cd7592 (test fix)
+app.sock
+

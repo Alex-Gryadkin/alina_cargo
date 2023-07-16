@@ -39,19 +39,25 @@ def make_not_active(self, request, queryset):
 
 
 class CargoAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    list_display = ('full_name', 'cargo_code', 'city_id', 'username_id', 'is_activated')
+    list_display = ('full_name', 'username_id', 'user_name', 'cargo_code', 'city_id', 'is_activated', 'last_login')
     search_fields = ['username__username', 'cargo_code']
     actions = [make_active, make_not_active]
+
 
     def get_queryset(self, request):
         qs = super(CargoAdmin, self).get_queryset(request)
         qs = qs.annotate(last_login=F('username__last_login'))
+        qs = qs.annotate(user_name=F('username__username'))
         return qs
 
     def last_login(self, obj):
         return obj.last_login
 
+    def user_name(self, obj):
+        return obj.user_name
+
     last_login.admin_order_field = 'last_login'
+
 
 
 class UsersAdmin(ImportExportModelAdmin):

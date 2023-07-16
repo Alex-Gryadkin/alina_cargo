@@ -29,9 +29,9 @@ SECRET_KEY = secrets['DJANGO_KEY']
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['18.208.214.207', 'www.winwincargo.kz', 'winwincargo.kz']
+ALLOWED_HOSTS = ['18.208.214.207', 'www.winwincargo.kz', 'winwincargo.kz', '127.0.0.1']
 
 
 # Application definition

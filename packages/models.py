@@ -57,6 +57,7 @@ class Packages(models.Model):
                                )
 
     status_change_date = models.DateTimeField(auto_now=True)
+    status_change_date_manual = models.CharField(max_length=17)
 
     def __str__(self):
         return str(self.id)

@@ -60,7 +60,11 @@
             <div class="card-body">
                 <button type="button" class="btn-close float-end  btn-del" onclick="DeleteTrackId('{{ package.package_id.id }}')" aria-label="Удалить"></button>
                 <h3 class="card-title">{{package.package_id.id }}</h3>
-                <h6 class="card-subtitle mb-2">{{ package.package_id.status.name }} {{ package.package_id.status_change_date|localtime|date:"d.m.Y H:i" }}</h6>
+                {% if package.package_id.status_change_date_manual != None and package.package_id.status_change_date_manual != "" %}
+                    <h6 class="card-subtitle mb-2">{{ package.package_id.status.name }} {{ package.package_id.status_change_date_manual }}</h6>
+                {% else %}
+                    <h6 class="card-subtitle mb-2">{{ package.package_id.status.name }} {{ package.package_id.status_change_date|localtime|date:"d.m.Y H:i" }}</h6>
+                {% endif %}
                 <p class="card-text">{{ package.desc }}</p>
             </div>
         </div>

@@ -56,12 +56,17 @@ class PackagesAdd(View):
         userpackagesave.save()
         package = UserPackages.objects.select_related('package_id').get(id=userpackagesave.id)
 
+        if not package.package_id.status_change_date_manual:
+            changedate = localtime(package.package_id.status_change_date).strftime("%d.%m.%Y %H:%M")
+        else:
+            changedate = package.package_id.status_change_date_manual
+
         return JsonResponse({'errorMessage': 0,
                              'packageid': package.package_id.id,
                              'desc': package.desc,
                              'status': str(package.package_id.status),
                              'statusname': package.package_id.status.name,
-                             'changedate': localtime(package.package_id.status_change_date).strftime("%d.%m.%Y %H:%M")},
+                             'changedate': changedate},
                             status=200)
 
 class StatusList(View):
